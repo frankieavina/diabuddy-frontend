@@ -1,20 +1,32 @@
+import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native'
+// provides a native React view that transitions between multiple colors in a linear direction.
+
+import DrawerNavigator from './navigation/DrawerNavigation';
+import LandingStackNavigator from './navigation/StackNavigation';
+const user = false; 
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+  <>
+    <StatusBar style='light'/>
+    {/* <SafeAreaView style={styles.rootScreen}> */}
+    <NavigationContainer>
+      { user ?
+        <DrawerNavigator/>
+      :
+        <LandingStackNavigator/> 
+      }
+    </NavigationContainer>
+    {/* </SafeAreaView>  */}
+  </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  rootScreen: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  }
 });
