@@ -1,27 +1,85 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/react-in-jsx-scope */
 import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native'
-// provides a native React view that transitions between multiple colors in a linear direction.
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Colors } from './constants/colors';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 
 import DrawerNavigator from './navigation/DrawerNavigation';
-import LandingStackNavigator from './navigation/StackNavigation';
-const user = false; 
+import LandingScreen from './screens/LandingScreen';
+import SignInScreen from './screens/SignInScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import DashboardScreen from './screens/DashboardScreen';
+import IconButton from './components/ui/IconButton';
+import { setLogout } from './store/UserSlice';
+import store from './store';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
   <>
-    <StatusBar style='light'/>
-    {/* <SafeAreaView style={styles.rootScreen}> */}
+    <Provider store={store}>
+      <StatusBar style='light'/>
+      <Navigation/>      
+    </Provider>
+  </>
+  );
+}
+
+////////////////// if user hasnt logged in yet ////////////////
+function AuthStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: Colors.primary500 },
+        headerTintColor: 'white',
+      }}
+    >
+      <Stack.Screen name='LandingPage' component={LandingScreen}/>
+      <Stack.Screen name="Login" component={SignInScreen} />
+      <Stack.Screen name="Signup" component={SignUpScreen} /> 
+    </Stack.Navigator>
+  );
+}
+
+////////////////// if user logged in ////////////////
+function AuthenticatedStack() {
+  const dispatch = useDispatch();
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: Colors.primary500 },
+        headerTintColor: 'white',
+        contentStyle: { backgroundColor: Colors.primary700 },
+      }}
+    >
+      <Stack.Screen name='LandingPage' component={DrawerNavigator} 
+        options={{
+          headerShown: false
+        }} 
+      />
+    </Stack.Navigator>
+  );
+}
+
+//////////// switches between logged in or landing page////////
+function Navigation() {
+  const isAuthenticated = useSelector((state) => state.UserData.loggedIn)
+  return (
+    // add a dynamic variable from userslice that changes from
+    // AuthStack to AuthenticatedStack 
     <NavigationContainer>
-      { user ?
-        <DrawerNavigator/>
-      :
-        <LandingStackNavigator/> 
+      { !isAuthenticated 
+        ?
+          <AuthenticatedStack />
+        :
+          <AuthStack />
       }
     </NavigationContainer>
-    {/* </SafeAreaView>  */}
-  </>
   );
 }
 

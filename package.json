@@ -6,9 +6,11 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "debug": "opne 'rndebugger://set-debugger-loc?host=localhost&port=9001'"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-navigation/bottom-tabs": "^6.3.3",
     "@react-navigation/drawer": "^6.4.4",
     "@react-navigation/native": "^6.0.12",
@@ -26,10 +28,13 @@
     "react-native-reanimated": "^2.10.0",
     "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
-    "react-redux": "^8.0.2"
+    "react-redux": "^8.0.2",
+    "redux-devtools-extension": "^2.13.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "^8.23.1",
+    "eslint-plugin-react": "^7.31.8"
   },
   "private": true
 }
