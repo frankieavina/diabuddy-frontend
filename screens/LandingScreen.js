@@ -2,8 +2,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { Button } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { Colors } from '../constants/colors';
 
 const LandingScreen = () => {
+  const navigation = useNavigation();
+
+  const signInHandler = () => {
+    navigation.navigate('Login');
+  }
+  
+  const signUpHandler = () => {
+    navigation.navigate('Signup');
+  }
+
   return (
     <View style={styles.rootContainer}>
       <View style={styles.logoContainer}>
@@ -19,8 +31,8 @@ const LandingScreen = () => {
         <Text style={styles.textContainer}>Welcome to DiaBuddy your gateway to controlling your diabetes!</Text>        
       </View>
       <View style={styles.buttonsContainer}>
-        <Button size='lg' title='Sign In'/>
-        <Button size='lg' title='Sign Up'/>
+        <Button size='lg' title='Sign In' buttonStyle={{backgroundColor:Colors.primary500}} onPress={signInHandler}/>
+        <Button size='lg' title='Sign Up' buttonStyle={{backgroundColor:Colors.primary500}} onPress={signUpHandler}/>
       </View>
     </View>
   )
