@@ -26,6 +26,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
     switch (inputType) {
       case 'name':
         setEnteredName(enteredValue);
+        break;
       case 'email':
         setEnteredEmail(enteredValue);
         break;
@@ -59,7 +60,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           <Input
             label="Name"
             onUpdateValue={updateInputValueHandler.bind(this,'name')}
-            secure
             value={enteredName}
             isInvalid={nameIsInvalid}
           />

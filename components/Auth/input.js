@@ -20,7 +20,7 @@ function Input({
       <TextInput
         style={[styles.input, isInvalid && styles.inputInvalid]}
         autoCapitalize={false}
-        keyboardType={keyboardType}
+        textContentType={keyboardType}
         secureTextEntry={secure}
         onChangeText={onUpdateValue}
         value={value}

@@ -16,6 +16,8 @@ import DashboardScreen from './screens/DashboardScreen';
 import IconButton from './components/ui/IconButton';
 import { setLogout } from './store/UserSlice';
 import store from './store';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,7 +50,6 @@ function AuthStack() {
 
 ////////////////// if user logged in ////////////////
 function AuthenticatedStack() {
-  const dispatch = useDispatch();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -68,12 +69,24 @@ function AuthenticatedStack() {
 
 //////////// switches between logged in or landing page////////
 function Navigation() {
-  const isAuthenticated = useSelector((state) => state.UserData.loggedIn)
+  const isAuthenticated = useSelector((state) => state.UserData.loggedIn);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function fetchUserExist(){
+      const storedUser = await AsyncStorage.getItem('token');
+      if(storedUser){
+        dispatch(userLoggedIn());
+      }
+    }
+    fetchUserExist();
+  },[]);
+
   return (
     // add a dynamic variable from userslice that changes from
     // AuthStack to AuthenticatedStack 
     <NavigationContainer>
-      { !isAuthenticated 
+      { (isAuthenticated)
         ?
           <AuthenticatedStack />
         :
