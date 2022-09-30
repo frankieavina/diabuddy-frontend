@@ -1,114 +1,135 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import SelectBox from 'react-native-multi-selectbox';
 import { Colors } from '../constants/colors';
-import Input from '../components/Auth/input';
+import { Input } from "@rneui/themed";
 import { useState } from 'react';
 import { Button } from '@rneui/themed';
 import DatePicker from 'react-native-date-picker';
+import { Card } from '@rneui/themed';
+import BasalTestCard from '../components/ui/BasalTestCard';
+import { Divider } from "@rneui/themed";
+
+const K_OPTIONS = [
+  {
+    item: 'Start',
+    id: 1,
+  },
+  {
+    item: '+1 hour',
+    id: 2,
+  },
+  {
+    item: '+2 hour(s)',
+    id: 3,
+  },
+  {
+    item: '+3 hour(s)',
+    id: 4,
+  },
+  {
+    item: '+4 hour(s)',
+    id: 5,
+  },
+  {
+    item: 'End',
+    id: 6,
+  }
+]
 
 const BasalTestingScreen = () => {
-  const [name, setName] = useState('Frankie');
+  const input = React.createRef();
   const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dateTime, setDateTime] = useState();
+  const [basalTime, setBasalTime] = useState({});
+  const [glucose, setGlucose] = useState('');
 
-  const updateInputValueHandler= (inputType, enteredValue) => {
-    switch (inputType) {
-      case 'name':
-        setName(enteredValue);
-        break;
-      case 'date-time':
-        setDateTime(enteredValue);
-        break;
-    }
+  const onSave = () =>{
+    console.log("Time and glucose",basalTime,glucose)
   }
 
-  const onSubmit = () =>{
-    console.log("set reminder:", name, date );
+  const onReset = () =>{
+    setBasalTime({});
+    input.current.clear(); 
+  }
+
+  function onChange() {
+    return (val) => setBasalTime(val)
   }
 
   return (
-  <>
+  <ScrollView>
     <View>
-      <Text style={styles.titleText}> Basal Testing </Text>
+      <Text style={styles.titleText}> Basal Rate Test</Text>
       <Text style={styles.infoText}> 
         Please fill out the corresponding form as you go. If you have 
         any trouble or questions please contact your doctor.
       </Text>
     </View>
-    <View style={styles.formContent}>
-      <View style={styles.form}>
-        <Input
-            label="Name"
-            onUpdateValue={updateInputValueHandler.bind(this, 'name')}
-            value={name}
-            keyboardType="email-address"
-        />
-        <View>
-        <Input
-            label="Date and Time"
-            onUpdateValue={updateInputValueHandler.bind(this, 'date-time')}
-            value={dateTime}
-            keyboardType="email-address"
-        />
-          <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={()=> setOpen(true)} textColor={Colors.primary700}>
-            Pick Datetime
-          </Button> 
-          <DatePicker 
-            modal 
-            open={open} 
-            date={date}  
-            onConfirm={(date) => {
-              setOpen(false);
-              setDate(date);
-            }}
-            onCancel={()=>{setOpen(false)}}
-          />
-        </View>
-        <View style={styles.buttons}>
-          <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSubmit} textColor={Colors.primary700}>
-            Save
-          </Button>      
-        </View>
-      </View>
+    <View style={styles.pickerContainer}>
+      <SelectBox
+        label="Select single"
+        options={K_OPTIONS}
+        value={basalTime}
+        onChange={onChange()}
+        hideInputFilter={false}
+        arrowIconColor={Colors.primary500}
+        width={'50%'}
+      />
+      <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}/>
     </View>
-  </>
+    <View style={styles.buttonsContainer}>
+      <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSave}>
+        Save
+      </Button> 
+      <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}} onPress={onReset}>
+        Reset
+      </Button> 
+    </View>
+    <Divider style={{margin:20}}/>
+    <View style={styles.container}>
+      <Card>
+        <Card.Title>Basal Rate Results: 11/12/2022</Card.Title>
+        <Card.Divider />
+        <BasalTestCard/>
+      </Card>
+    </View>
+  </ScrollView>
   )
 }
 
 export default BasalTestingScreen
 
 const styles = StyleSheet.create({
-  formContent:{
-    marginTop: 64,
-    marginHorizontal: 32,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary800,
-    elevation: 2,
-    shadowColor: 'black',
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.35,
-    shadowRadius: 4,
+  pickerContainer:{
+    margin: 20,
+    marginTop: 40,
+    flexDirection: 'row'
   },
-  buttons:{
-    marginTop: 8,
+  buttonsContainer:{
+    marginBottom: 20,
+    marginLeft: 20,
+    marginRight:20,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   titleText:{
     fontSize: 25,
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 55,
+    marginTop: 20,
     padding: 10,
-    textAlign: 'start',
+    textAlign: 'center',
     textColor: Colors.primary500
   },
   infoText:{
-    fontSize: 15,
+    fontSize: 10,
     marginLeft: 20,
     marginRight: 20,
     padding: 10,
-    textAlign: 'start',
+    textAlign: 'center',
     textColor: Colors.primary800
+  },
+  inputContainer:{
+    margin: 20,
   }
 })

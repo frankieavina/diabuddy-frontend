@@ -18,6 +18,7 @@ import { setLogout } from './store/UserSlice';
 import store from './store';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { userLoggedIn } from './store/UserSlice';
 
 const Stack = createNativeStackNavigator();
 
