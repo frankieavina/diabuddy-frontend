@@ -6,27 +6,42 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "debug": "opne 'rndebugger://set-debugger-loc?host=localhost&port=9001'"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.10",
+    "@react-native-community/datetimepicker": "6.2.0",
     "@react-navigation/bottom-tabs": "^6.3.3",
     "@react-navigation/drawer": "^6.4.4",
     "@react-navigation/native": "^6.0.12",
     "@react-navigation/native-stack": "^6.8.0",
     "@reduxjs/toolkit": "^1.8.5",
+    "@rneui/base": "^4.0.0-rc.6",
+    "@rneui/themed": "^4.0.0-rc.6",
     "axios": "^0.27.2",
     "expo": "~46.0.9",
+    "expo-linear-gradient": "~11.4.0",
     "expo-status-bar": "~1.4.0",
-    "react": "18.0.0",
-    "react-native": "0.69.5",
-    "react-native-gesture-handler": "^2.6.0",
+    "moment": "^2.29.4",
+    "pod-install": "^0.1.38",
+    "react": "~16.8.6 || ~16.9.0 || ~16.11.0 || ~16.13.1 || ~17.0.1 || 18.0.0",
+    "react-native": "^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63.2 || ^0.64.0 || ^0.69.5 || 1000.0.0",
+    "react-native-calendars": "^1.1289.0",
+    "react-native-date-picker": "^4.2.5",
+    "react-native-gesture-handler": "~2.5.0",
+    "react-native-modal-datetime-picker": "^14.0.0",
+    "react-native-multi-selectbox": "^1.5.0",
     "react-native-reanimated": "^2.10.0",
-    "react-native-safe-area-context": "^4.3.3",
+    "react-native-safe-area-context": "4.3.1",
     "react-native-screens": "~3.15.0",
-    "react-redux": "^8.0.2"
+    "react-redux": "^8.0.2",
+    "redux-devtools-extension": "^2.13.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "^8.23.1",
+    "eslint-plugin-react": "^7.31.8"
   },
   "private": true
 }
