@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const userLogIn = createAsyncThunk(
   'signIn',
   async ({ email, password }) => {
     try {
-      console.log('WE HIT A REQUEST');
       const backendRes = await axios.post(
-        'http://localhost:3000/api/users/signin',
+        'http://localhost:3000/api/auth/signin',
         {
           email: email,
           password: password
@@ -25,7 +25,7 @@ export const userRegister = createAsyncThunk(
   async ({ email, password, name }) => {
     try {
       const backendRes = await axios.post(
-        'http://localhost:3000/api/users/register',
+        'http://localhost:3000/api/auth/signup',
         {
           name: name,
           email: email,
@@ -48,15 +48,13 @@ export const userSlice = createSlice({
     error: false
   },
   reducers: {
-    // setUser(state, { payload }) {
-    //   state.username = payload.username;
-    //   state.name = payload.name;
-    //   state.loggedIn = false;
-    // },
+    userLoggedIn(state, { payload }) {
+      state.loggedIn = true;
+    },
     setLogout(state) {
       state.loggedIn = false;
       state.value = {};
-      // remove jwt from storage
+      AsyncStorage.clear();
     },
   },
   extraReducers(builder) {
@@ -65,13 +63,22 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(userLogIn.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        console.log(payload);
-        // state.value = payload.result;
-        state.loggedIn = true;
-        // if (payload.token) {
-        //   localStorage.setItem('user', JSON.stringify(payload.token));
-        // }
+        if(payload.success){
+          state.loading = false;
+          console.log(payload);
+          state.value = payload.result;
+          state.loggedIn = true;
+          if (payload.token) {
+            AsyncStorage.setItem('token', JSON.stringify(payload.token));
+            AsyncStorage.setItem('user', payload.result.name);
+          }
+        } else {
+          Alert.alert(
+            'Authentication failed!',
+            'Could not log you in. Please check your credentials or try again later!'
+          );
+        }
+
       })
       .addCase(userLogIn.rejected, (state) => {
         state.error = true;
@@ -80,9 +87,21 @@ export const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(userRegister.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.loggedIn = true; 
-        // state.value = payload.reslut;
+        if(payload.success){
+          state.loading = false;
+          console.log(payload);
+          state.value = payload.result;
+          state.loggedIn = true;
+          if (payload.token) {
+            AsyncStorage.setItem('token', JSON.stringify(payload.token));
+            AsyncStorage.setItem('user', payload.result.name);
+          }
+        } else {
+          Alert.alert(
+            'Authentication failed!',
+            'Could not log you in. Please check your credentials or try again later!'
+          );
+        }
       })
       .addCase(userRegister.rejected, (state) => {
         state.error = true;
@@ -90,6 +109,6 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setLogout } = userSlice.actions;
+export const { setLogout, userLoggedIn } = userSlice.actions;
 
 export default userSlice.reducer;
