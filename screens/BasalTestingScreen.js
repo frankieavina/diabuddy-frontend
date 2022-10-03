@@ -7,8 +7,8 @@ import { useState } from 'react';
 import { Button } from '@rneui/themed';
 import DatePicker from 'react-native-date-picker';
 import { Card } from '@rneui/themed';
-import BasalTestCard from '../components/ui/BasalTestCard';
 import { Divider } from "@rneui/themed";
+import BasalList from '../components/ui/BasalList';
 
 const K_OPTIONS = [
   {
@@ -65,34 +65,30 @@ const BasalTestingScreen = () => {
         any trouble or questions please contact your doctor.
       </Text>
     </View>
-    <View style={styles.pickerContainer}>
-      <SelectBox
-        label="Select single"
-        options={K_OPTIONS}
-        value={basalTime}
-        onChange={onChange()}
-        hideInputFilter={false}
-        arrowIconColor={Colors.primary500}
-        width={'50%'}
-      />
-      <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}/>
-    </View>
-    <View style={styles.buttonsContainer}>
-      <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSave}>
-        Save
-      </Button> 
-      <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}} onPress={onReset}>
-        Reset
-      </Button> 
-    </View>
+    <Card>
+      <View style={styles.pickerContainer}>
+        <SelectBox
+          label="Select single"
+          options={K_OPTIONS}
+          value={basalTime}
+          onChange={onChange()}
+          hideInputFilter={false}
+          arrowIconColor={Colors.primary500}
+          width={'50%'}
+        />
+        <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}/>
+      </View>
+      <View style={styles.buttonsContainer}>
+        <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSave}>
+          Save
+        </Button> 
+        <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}} onPress={onReset}>
+          Reset
+        </Button> 
+      </View>
+    </Card>
     <Divider style={{margin:20}}/>
-    <View style={styles.container}>
-      <Card>
-        <Card.Title>Basal Rate Results: 11/12/2022</Card.Title>
-        <Card.Divider />
-        <BasalTestCard/>
-      </Card>
-    </View>
+    <BasalList/>
   </ScrollView>
   )
 }

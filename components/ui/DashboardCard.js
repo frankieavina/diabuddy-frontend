@@ -12,7 +12,7 @@ const DashboardCard = ({header, data, iconPic}) => {
             <Ionicons name={iconPic}/>{header}
         </Card.Title>
         <Card.Divider />
-        <View >
+        <View>
           <Badge value={data} status="primary" badgeStyle={{backgroundColor: Colors.primary700}} />
         </View>
     </Card>

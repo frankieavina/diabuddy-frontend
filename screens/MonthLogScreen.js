@@ -50,12 +50,19 @@ const styles = StyleSheet.create({
   },
   calenderContainer:{
     flex: 1,
-    margin: 20
+    margin: 20,
+    borderRadius: 4,
+    elevation: 2,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.35,
+    shadowRadius: 4,
   },
   headingContainer:{
     margin: 20,
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: Colors.icon500
   },
   button:{
     marginTop: 40,

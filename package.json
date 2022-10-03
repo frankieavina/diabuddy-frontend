@@ -29,6 +29,7 @@
     "react-native": "^0.60.6 || ^0.61.5 || ^0.62.2 || ^0.63.2 || ^0.64.0 || ^0.69.5 || 1000.0.0",
     "react-native-calendars": "^1.1289.0",
     "react-native-date-picker": "^4.2.5",
+    "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-multi-selectbox": "^1.5.0",

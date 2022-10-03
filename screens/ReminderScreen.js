@@ -1,18 +1,20 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import React , {useState} from 'react';
 import { Input } from "@rneui/themed";
 import { Colors } from '../constants/colors';
 import { Button } from '@rneui/themed';
-import { Icon } from "@rneui/themed";
+import { Icon, Card} from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
+import ListCard from '../components/ui/ListCard';
 
 const ReminderScreen = () => {
   const now = moment();
   const [name, setName] = useState('');
   const [dateTime, setDateTime] = useState(now.format("MM DD YYYY hh:mm"));
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [show, setShow] = useState(false);
   const input = React.createRef();
 
   const showDatePicker = () => {
@@ -21,10 +23,12 @@ const ReminderScreen = () => {
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+    toggleShowAlarm();
   };
 
   const handleConfirm = (date) => {
     const d = moment(date);
+    console.log(d)
     const m = d.format("LLL")
     console.log(m);
     setDateTime(m);
@@ -35,10 +39,15 @@ const ReminderScreen = () => {
 
   }
 
+  const toggleShowAlarm = () =>{
+    setShow(!show);
+  }
+
 
   return (
     <View style={styles.notificationContainer}>
-      <View style={styles.formContent}>
+      {show? 
+      <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input 
             onChangeText={value => setName(value)} 
@@ -72,11 +81,20 @@ const ReminderScreen = () => {
           <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500, borderWidth:1}} titleStyle={{ color: Colors.primary500}} onPress={onSubmit}>
             Save
           </Button>    
-          <Button buttonStyle={{backgroundColor:Colors.primary500}}>
+          <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={toggleShowAlarm}>
             Cancel
           </Button> 
         </View>
-      </View>    
+      </Card>
+      : 
+        <View style={styles.buttonsContainer}>
+          <Text style={{fontSize: 25, color:Colors.icon500}}>Add Alarm</Text>
+          <Pressable onPress={toggleShowAlarm}>
+            <Ionicons name="add-circle-outline" size={30} color={Colors.primary700} />
+          </Pressable>
+        </View>
+      }
+      <ListCard/> 
     </View>
 
   )
@@ -86,14 +104,11 @@ export default ReminderScreen
 
 const styles = StyleSheet.create({
   formContent:{
-    marginTop: 64,
-    marginHorizontal: 32,
+    //marginTop: 64,
+   // marginHorizontal: 32,
     padding: 16,
-    borderRadius: 8,
-    // backgroundColor: Colors.primary800,
-    borderColor: Colors.primary500,
-    borderWidth: 1,
     color: Colors.primary500,
+    borderRadius: 4,
     elevation: 2,
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
@@ -111,5 +126,11 @@ const styles = StyleSheet.create({
   },
   addDateContainer:{
     flexDirection: 'row'
+  },
+  buttonsContainer:{
+    margin: 20,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
   }
 })
