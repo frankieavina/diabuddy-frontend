@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
     flex:1
   },
   calenderContainer:{
-    flex: 1,
     margin: 20,
     borderRadius: 4,
     elevation: 2,
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
     color: Colors.icon500
   },
   button:{
+    flex:1,
     marginTop: 40,
     padding:20,
     flex:1,

@@ -3,12 +3,17 @@ import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from 'reac
 import { Colors } from '../../constants/colors';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
+import getCarbs from '../../api/FoodAPI';
 
-const FoodModal = ({onVisible, modalVisible}) => {
+
+const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
     const [searchText, setSearchText] = useState('');
 
-    const searchFood = () =>{
-        
+    const searchFood = async() =>{
+        const arrayFood = searchText.split(",");
+        console.log(arrayFood);
+        await getCarbs(arrayFood).then((total) => setTotalCarbs(total));
+        onVisible();
     }
 
     return (
@@ -24,6 +29,7 @@ const FoodModal = ({onVisible, modalVisible}) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               {/* ///////////////////////////////////// */}
+              <Text>Please separate food with comma.</Text>
                 <Card style={styles.formContent}>
                     <View style={styles.form}>
                     <TextInput

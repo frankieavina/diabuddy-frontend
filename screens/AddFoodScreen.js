@@ -23,6 +23,11 @@ const AddFoodScreen = () => {
     setModalVisible(!modalVisible);
   }
 
+  const setCarbsTotal = (total) => {
+    console.log('HI',total)
+    setCarbs(total);
+  }
+
   return (
     <View style={styles.bolusWizardContainer}>
       <View style={styles.title}>
@@ -48,9 +53,10 @@ const AddFoodScreen = () => {
       <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input
-            onChangeText={value => setGlucose(value)} 
+            onChangeText={value => setCarbs(value)} 
             containerStyle={{width: '100%'}} 
             placeholder={'0 carbs'}
+            value={carbs}
             rightIcon={
               <Pressable onPress={toggleCarbsModal}>
                 <Ionicons name="add-circle-outline" size={25} color={Colors.primary700}></Ionicons>
@@ -68,7 +74,7 @@ const AddFoodScreen = () => {
       <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input
-            onChangeText={value => setGlucose(value)} 
+            onChangeText={value => setBolus(value)} 
             containerStyle={{width: '100%'}} 
             placeholder={'0 units'}
             label={
@@ -88,7 +94,7 @@ const AddFoodScreen = () => {
           Cancel
         </Button>  
       </View>   
-      {modalVisible && <FoodModal onVisible={toggleCarbsModal} modalVisible={modalVisible}/>}
+      {modalVisible && <FoodModal onVisible={toggleCarbsModal} modalVisible={modalVisible} setTotalCarbs={setCarbsTotal}/>}
     </View>
   )
 }
