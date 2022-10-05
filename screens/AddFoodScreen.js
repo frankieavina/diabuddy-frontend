@@ -6,17 +6,30 @@ import { Button } from '@rneui/themed';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import FoodModal from '../components/ui/FoodModal';
+import { useDispatch } from 'react-redux';
+import { addBolus } from '../store/FoodLogSlice';
 
 const AddFoodScreen = () => {
+  const dispatch = useDispatch();
 
   const [glucose, setGlucose] = useState(0);
   const [carbs, setCarbs] = useState(0);
   const [bolus, setBolus] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isDis, setIsDis] = useState(false);
 
 
   const onSubmit = () =>{
-    console.log("set reminder:", name, date, time);
+    dispatch(addBolus({
+      date: Date.now(),
+      glucose: glucose,
+      carbs: carbs,
+      bolus: bolus
+    })); 
+    setGlucose(0);
+    setCarbs(0);
+    setBolus(0);
+    setIsDis(false);
   }
 
   const toggleCarbsModal = () => {
@@ -24,7 +37,7 @@ const AddFoodScreen = () => {
   }
 
   const setCarbsTotal = (total) => {
-    console.log('HI',total)
+    setIsDis(true);
     setCarbs(total);
   }
 
@@ -53,6 +66,7 @@ const AddFoodScreen = () => {
       <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input
+            disabled={isDis}
             onChangeText={value => setCarbs(value)} 
             containerStyle={{width: '100%'}} 
             placeholder={'0 carbs'}

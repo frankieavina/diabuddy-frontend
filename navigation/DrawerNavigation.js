@@ -39,39 +39,38 @@ export default function DrawerNavigator() {
     getUser();
   },[])
   return (
-    <Drawer.Navigator screenOptions={screenOptionStyle}>
+    <Drawer.Navigator 
+      screenOptions={screenOptionStyle}
+      drawerContent={(props) => <CustomDrawerContent {...props}/>}
+    >
       <Drawer.Screen name={user} component={TabNavigator} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
       <Drawer.Screen name='notifications' component={ReminderScreen} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="notifications-outline" color={color} size={size} />),}}/>
-      <Drawer.Screen name='settings' component={TabNavigator} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="cog-outline" color={color} size={size} />),}}/>
-      <Drawer.Screen name='logout' component={TabNavigator} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="log-out-outline" color={color} size={size} />),}}/>
     </Drawer.Navigator>
   );
 }
 
-// function AppDrawerContent(props){
-//   const dispatch = useDispatch();
-
-// this goes inside drawer.navigator: drawerContent={props=><AppDrawerContent {...props}/>} 
+function CustomDrawerContent(props){
+  const dispatch = useDispatch();
   
-//   return (
-//     <DrawerContentScrollView {...props} contentContainerStyle={{flex:1}}>
-//       {/*all of the drawer items*/}
-//       <DrawerItemList {...props}  style={{borderWidth:1}}/>
-//       <View style={{flex:3,marginVertical:20,borderWidth:1}}>
-//         <DrawerItem 
-//           label= {'Settings'}
-//           icon={({color,size}) => (<Ionicons name='cog-outline' color={color} size={size}/>)}
-//           onPress={ ()=> dispatch(setLogout()) }
-//           style={{flex:1,justifyContent:'flex-end'}}
-//         />
-//         <DrawerItem 
-//           label= {'Logout'}
-//           icon={({color,size}) => (<Ionicons name='log-out-outline' color={color} size={size}/>)}
-//           onPress={ ()=> dispatch(setLogout()) }
-//           style={{flex:1,justifyContent:'flex-end'}}
-//         />
-//       </View>
-//     </DrawerContentScrollView>
-//   );
-// }
+  return (
+    <DrawerContentScrollView {...props}>
+      {/*all of the drawer items*/}
+      <DrawerItemList {...props}  style={{borderWidth:1}}/>
+      <View>
+        <DrawerItem 
+          label= {'Settings'}
+          labelStyle = {{color: Colors.primary600}}
+          icon={({color,size}) => (<Ionicons name='cog-outline' color={Colors.primary600} size={size}/>)}
+          onPress={ ()=> dispatch(setLogout()) }
+        />
+        <DrawerItem 
+          label= {'Logout'}
+          labelStyle = {{color: Colors.primary600}}
+          icon={({color,size}) => (<Ionicons name='log-out-outline' color={Colors.primary600} size={size}/>)}
+          onPress={ ()=> dispatch(setLogout()) }
+        />
+      </View>
+    </DrawerContentScrollView>
+  );
+}
 

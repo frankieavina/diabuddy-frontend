@@ -10,9 +10,11 @@ const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
     const [searchText, setSearchText] = useState('');
 
     const searchFood = async() =>{
-        const arrayFood = searchText.split(",");
-        console.log(arrayFood);
-        await getCarbs(arrayFood).then((total) => setTotalCarbs(total));
+        const arrayFood = searchText.trim().split(/\s+/);
+        await getCarbs(arrayFood)
+          .then((total) =>{
+            setTotalCarbs(total);
+          }); 
         onVisible();
     }
 
@@ -29,7 +31,7 @@ const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               {/* ///////////////////////////////////// */}
-              <Text>Please separate food with comma.</Text>
+              <Text>Please separate food with space.</Text>
                 <Card style={styles.formContent}>
                     <View style={styles.form}>
                     <TextInput
@@ -50,8 +52,9 @@ const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
                 </Pressable>
                 <Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={searchFood}>
-                    <Text style={styles.textStyle}>Add</Text>
+                    onPress={searchFood}
+                >
+                  <Text style={styles.textStyle}>Add</Text>
                 </Pressable>            
               </View>
 
