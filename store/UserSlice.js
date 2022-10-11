@@ -43,6 +43,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     value: {},
+    imageProfile: '',
     loggedIn: false,
     loading: false,
     error: false
@@ -56,6 +57,10 @@ export const userSlice = createSlice({
       state.value = {};
       AsyncStorage.clear();
     },
+    setProfileImage(state,{payload}){
+      console.log('yooooo', payload)
+      state.imageProfile = payload;
+    }
   },
   extraReducers(builder) {
     builder
@@ -109,6 +114,6 @@ export const userSlice = createSlice({
   }
 });
 
-export const { setLogout, userLoggedIn } = userSlice.actions;
+export const { setLogout, userLoggedIn, setProfileImage} = userSlice.actions;
 
 export default userSlice.reducer;

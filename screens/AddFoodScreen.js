@@ -6,21 +6,39 @@ import { Button } from '@rneui/themed';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import FoodModal from '../components/ui/FoodModal';
+import { useDispatch } from 'react-redux';
+import { addBolus } from '../store/FoodLogSlice';
 
 const AddFoodScreen = () => {
+  const dispatch = useDispatch();
 
   const [glucose, setGlucose] = useState(0);
   const [carbs, setCarbs] = useState(0);
   const [bolus, setBolus] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isDis, setIsDis] = useState(false);
 
 
   const onSubmit = () =>{
-    console.log("set reminder:", name, date, time);
+    dispatch(addBolus({
+      date: Date.now(),
+      glucose: glucose,
+      carbs: carbs,
+      bolus: bolus
+    })); 
+    setGlucose(0);
+    setCarbs(0);
+    setBolus(0);
+    setIsDis(false);
   }
 
   const toggleCarbsModal = () => {
     setModalVisible(!modalVisible);
+  }
+
+  const setCarbsTotal = (total) => {
+    setIsDis(true);
+    setCarbs(total);
   }
 
   return (
@@ -48,9 +66,11 @@ const AddFoodScreen = () => {
       <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input
-            onChangeText={value => setGlucose(value)} 
+            disabled={isDis}
+            onChangeText={value => setCarbs(value)} 
             containerStyle={{width: '100%'}} 
             placeholder={'0 carbs'}
+            value={carbs}
             rightIcon={
               <Pressable onPress={toggleCarbsModal}>
                 <Ionicons name="add-circle-outline" size={25} color={Colors.primary700}></Ionicons>
@@ -68,7 +88,7 @@ const AddFoodScreen = () => {
       <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input
-            onChangeText={value => setGlucose(value)} 
+            onChangeText={value => setBolus(value)} 
             containerStyle={{width: '100%'}} 
             placeholder={'0 units'}
             label={
@@ -88,7 +108,7 @@ const AddFoodScreen = () => {
           Cancel
         </Button>  
       </View>   
-      {modalVisible && <FoodModal onVisible={toggleCarbsModal} modalVisible={modalVisible}/>}
+      {modalVisible && <FoodModal onVisible={toggleCarbsModal} modalVisible={modalVisible} setTotalCarbs={setCarbsTotal}/>}
     </View>
   )
 }

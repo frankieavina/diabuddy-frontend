@@ -2,7 +2,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from './constants/colors';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,13 +12,11 @@ import DrawerNavigator from './navigation/DrawerNavigation';
 import LandingScreen from './screens/LandingScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
-import DashboardScreen from './screens/DashboardScreen';
-import IconButton from './components/ui/IconButton';
-import { setLogout } from './store/UserSlice';
 import store from './store';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userLoggedIn } from './store/UserSlice';
+import ImageForm from './components/NativeFt/ImageFormScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -64,6 +62,11 @@ function AuthenticatedStack() {
           headerShown: false
         }} 
       />
+      <Stack.Screen name='Camera' component={ImageForm} 
+        options={{
+          headerShown: false
+        }} 
+      />
     </Stack.Navigator>
   );
 }
@@ -87,7 +90,7 @@ function Navigation() {
     // add a dynamic variable from userslice that changes from
     // AuthStack to AuthenticatedStack 
     <NavigationContainer>
-      { (isAuthenticated)
+      { (!isAuthenticated)
         ?
           <AuthenticatedStack />
         :

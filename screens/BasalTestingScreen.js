@@ -5,10 +5,11 @@ import { Colors } from '../constants/colors';
 import { Input } from "@rneui/themed";
 import { useState } from 'react';
 import { Button } from '@rneui/themed';
-import DatePicker from 'react-native-date-picker';
 import { Card } from '@rneui/themed';
 import { Divider } from "@rneui/themed";
 import BasalList from '../components/ui/BasalList';
+import { useDispatch } from 'react-redux';
+import { addBasalTest, deleteBasalTest } from '../store/BasalTestingSlice';
 
 const K_OPTIONS = [
   {
@@ -38,18 +39,20 @@ const K_OPTIONS = [
 ]
 
 const BasalTestingScreen = () => {
-  const input = React.createRef();
-  const [date, setDate] = useState(new Date());
+  const dispatch = useDispatch();
+
   const [basalTime, setBasalTime] = useState({});
   const [glucose, setGlucose] = useState('');
 
   const onSave = () =>{
-    console.log("Time and glucose",basalTime,glucose)
+    console.log("Time and glucose",basalTime.item,glucose,Date.now())
+    dispatch(addBasalTest({numTest: basalTime.item, glucose, date: Date.now()}))
   }
 
   const onReset = () =>{
     setBasalTime({});
-    input.current.clear(); 
+    setGlucose('');
+    setDate('');
   }
 
   function onChange() {
@@ -57,7 +60,7 @@ const BasalTestingScreen = () => {
   }
 
   return (
-  <ScrollView>
+  <View>
     <View>
       <Text style={styles.titleText}> Basal Rate Test</Text>
       <Text style={styles.infoText}> 
@@ -76,7 +79,9 @@ const BasalTestingScreen = () => {
           arrowIconColor={Colors.primary500}
           width={'50%'}
         />
-        <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}/>
+        <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}>
+          {glucose}
+        </Input>
       </View>
       <View style={styles.buttonsContainer}>
         <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSave}>
@@ -89,7 +94,7 @@ const BasalTestingScreen = () => {
     </Card>
     <Divider style={{margin:20}}/>
     <BasalList/>
-  </ScrollView>
+  </View>
   )
 }
 
