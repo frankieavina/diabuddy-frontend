@@ -28,6 +28,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "The app accesses your camera in order to take pictures of your favorite beer or crazy hair day photo!"
+        }
+      ]
+    ]
   }
 }
