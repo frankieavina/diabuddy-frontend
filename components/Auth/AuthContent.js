@@ -58,7 +58,6 @@ function AuthContent({ isLogin, onAuthenticate, onAuthenticateLog}) {
       onAuthenticate({email, password, name})
     }
     
-    console.log("hey we are signing up or logging in in with email and password:"+email+password)
   }
 
 

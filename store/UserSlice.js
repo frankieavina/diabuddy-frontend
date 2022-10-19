@@ -58,7 +58,6 @@ export const userSlice = createSlice({
       AsyncStorage.clear();
     },
     setProfileImage(state,{payload}){
-      console.log('yooooo', payload)
       state.imageProfile = payload;
     }
   },
@@ -70,12 +69,13 @@ export const userSlice = createSlice({
       .addCase(userLogIn.fulfilled, (state, { payload }) => {
         if(payload.success){
           state.loading = false;
-          console.log(payload);
           state.value = payload.result;
           state.loggedIn = true;
           if (payload.token) {
             AsyncStorage.setItem('token', JSON.stringify(payload.token));
             AsyncStorage.setItem('user', payload.result.name);
+            AsyncStorage.setItem('id', JSON.stringify(payload.result.id));
+            AsyncStorage.setItem('role', JSON.stringify(payload.result.roleId));
           }
         } else {
           Alert.alert(
@@ -94,7 +94,6 @@ export const userSlice = createSlice({
       .addCase(userRegister.fulfilled, (state, { payload }) => {
         if(payload.success){
           state.loading = false;
-          console.log(payload);
           state.value = payload.result;
           state.loggedIn = true;
           if (payload.token) {

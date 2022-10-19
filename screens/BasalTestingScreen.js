@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import { ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
+import React, { useEffect } from 'react';
 import SelectBox from 'react-native-multi-selectbox';
 import { Colors } from '../constants/colors';
 import { Input } from "@rneui/themed";
@@ -8,8 +8,9 @@ import { Button } from '@rneui/themed';
 import { Card } from '@rneui/themed';
 import { Divider } from "@rneui/themed";
 import BasalList from '../components/ui/BasalList';
-import { useDispatch } from 'react-redux';
-import { addBasalTest, deleteBasalTest } from '../store/BasalTestingSlice';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { addBasalTest, deleteBasalTest, getBasalTest } from '../store/BasalTestingSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const K_OPTIONS = [
   {
@@ -39,20 +40,47 @@ const K_OPTIONS = [
 ]
 
 const BasalTestingScreen = () => {
+
   const dispatch = useDispatch();
+  const basalTests = useSelector(
+    (state) => state.basal.value,
+    shallowEqual
+  );
+
+  const [userId , setUserId] = useState('');
+
+  useEffect(() => {
+    const getUserId = async () =>{
+      await AsyncStorage.getItem('id')
+        .then((id) => {
+          setUserId(id);
+          dispatch(getBasalTest(id));
+        })
+    }
+    getUserId();
+  },[]);
 
   const [basalTime, setBasalTime] = useState({});
   const [glucose, setGlucose] = useState('');
 
-  const onSave = () =>{
-    console.log("Time and glucose",basalTime.item,glucose,Date.now())
-    dispatch(addBasalTest({numTest: basalTime.item, glucose, date: Date.now()}))
+  const onSave = async () =>{
+    console.log('HIII:', glucose, basalTime)
+    if(glucose.length > 0 || basalTime.length > 0){
+      onReset();
+      await dispatch(addBasalTest({numTest: basalTime.item, glucose, date: Date.now(), userId}));
+      await dispatch(getBasalTest(userId)); 
+    }else{
+      return Alert.alert(
+        'Submission failed!',
+        'Please check your inputs or try again later!'
+      );
+    }
+
   }
 
   const onReset = () =>{
     setBasalTime({});
     setGlucose('');
-    setDate('');
   }
 
   function onChange() {
@@ -60,7 +88,7 @@ const BasalTestingScreen = () => {
   }
 
   return (
-  <View>
+  <View style={{ flex: 1 }}>
     <View>
       <Text style={styles.titleText}> Basal Rate Test</Text>
       <Text style={styles.infoText}> 
@@ -93,7 +121,7 @@ const BasalTestingScreen = () => {
       </View>
     </Card>
     <Divider style={{margin:20}}/>
-    <BasalList/>
+    <BasalList basalTests={basalTests} />
   </View>
   )
 }

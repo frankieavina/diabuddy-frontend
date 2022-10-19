@@ -1,5 +1,6 @@
 import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React , {useState} from 'react';
+import React , { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Input } from "@rneui/themed";
 import { Colors } from '../constants/colors';
 import { Button } from '@rneui/themed';
@@ -8,6 +9,21 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
 import ListCard from '../components/ui/ListCard';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import { StatusBar } from 'expo-status-bar';
+import { addReminder } from '../store/ReminderSlice';
+
+// settings for notification so just show alert (no sound or badge)
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+      shouldShowAlert: true
+    };
+  }
+});
 
 const ReminderScreen = () => {
   const now = moment();
@@ -16,6 +32,61 @@ const ReminderScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [show, setShow] = useState(false);
   const input = React.createRef();
+  const dispatch = useDispatch();
+
+  //************** local handler ******************************//
+  useEffect(() => {
+    // receiving notification(s) and handling them
+    const subscription1 = Notifications.addNotificationReceivedListener((notification) => {
+      console.log('NOTIFICATION RECEIVED');
+      console.log(notification);
+      const userName = notification.request.content.data.userName;
+      console.log(userName);
+    });
+
+    // reacting to incoming notification(s)
+    const subscription2 = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log('NOTIFICATION RESPONSE RECEIVED');
+      console.log(response);
+      const userName = response.notification.request.content.data.userName;
+      console.log(userName);
+    });
+
+    return () => {
+      subscription1.remove();
+      subscription2.remove();
+    };
+  }, []);
+
+  // function for iOS for permission
+  useEffect(() => {
+    Permissions.getAsync(Permissions.NOTIFICATIONS)
+      .then((statusObj) => {
+        if (statusObj.status !== 'granted') {
+          return Permissions.askAsync(Permissions.NOTIFICATIONS)
+        }
+        return statusObj;
+      })
+      .then((statusObj) => {
+        if (statusObj.status !== 'granted') {
+          return;
+        }
+      });
+  }, []);
+
+  //********************* scheduling notification(s) *****************/
+  const scheduleNotificationHandler = async () => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "You've got mail! 📬",
+        body: 'Here is the notification body',
+        data: { userName: 'Max' }
+      },
+      trigger: {
+        seconds: 5
+      }
+    });
+  }
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -28,15 +99,14 @@ const ReminderScreen = () => {
 
   const handleConfirm = (date) => {
     const d = moment(date);
-    console.log(d)
     const m = d.format("LLL")
-    console.log(m);
     setDateTime(m);
     hideDatePicker();
   };
 
   const onSubmit = () => {
-
+    dispatch(addReminder({name, dateTime}))
+    scheduleNotificationHandler();
   }
 
   const toggleShowAlarm = () =>{

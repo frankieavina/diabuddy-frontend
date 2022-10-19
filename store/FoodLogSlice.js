@@ -26,11 +26,10 @@ export const addBolus = createAsyncThunk(
   }
 );
 
-export const basalSlice = createSlice({
-  name: 'user',
+export const bolusSlice = createSlice({
+  name:'bolus',
   initialState: {
     value: {},
-    loggedIn: false,
     loading: false,
     error: false
   },
@@ -50,6 +49,6 @@ export const basalSlice = createSlice({
   }
 });
 
-export const { } = basalSlice.actions;
+export const { } = bolusSlice.actions;
 
-export default basalSlice.reducer;
+export default bolusSlice.reducer;

@@ -7,7 +7,6 @@ import { Colors } from '../constants/colors';
 
 const DashboardScreen = () => {
   const user = useSelector((state) => state.UserData.value);
-  console.log('HELLO',user);
 
   return (
     <>

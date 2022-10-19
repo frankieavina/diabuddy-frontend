@@ -1,38 +1,23 @@
 import React, { useState } from 'react'
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FlatList, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Colors } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Badge } from "@rneui/themed";
 
-const DATA = [
-    {
-      id: "1",
-      title: "Start:",
-      dateTime: "127 mg/dL"
-    },
-    {
-      id: "2",
-      title: "+1:",
-      dateTime: '230 mg/dL'
-    },
-    {
-      id: "3",
-      title: "+2:",
-      dateTime: '80 mg/dL'
-    },
-  ];
-
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.title}</Text>
-      <Badge status="primary" value={item.dateTime} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.title, textColor]}>{item.numberOfTest}</Text>
+    <Badge status="primary" value={item.glucose} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
+    <Pressable>
       <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
-    </TouchableOpacity>
-  );
+    </Pressable>
+  </TouchableOpacity>
+);
 
-const BasalList = () => {
+const BasalList = ({ basalTests }) => {
     const [selectedId, setSelectedId] = useState(null);
 
+    ////////////////////////////////////////////////////////////////////////////
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? Colors.icon800 : 'white';
         const color = item.id === selectedId ? Colors.icon500 : Colors.icon500;
@@ -46,11 +31,12 @@ const BasalList = () => {
           />
         );
     };
+    ////////////////////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
         <FlatList
-            data={DATA}
+            data={basalTests}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}
@@ -64,7 +50,9 @@ export default BasalList
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 20,
+        marginRight: 20,
+        marginLeft: 20,
+        marginBottom: 20,
       },
       item: {
         flexDirection: 'row',
@@ -81,6 +69,8 @@ const styles = StyleSheet.create({
       },
       title: {
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        padding: 5,
+        paddingRight: 0,
       },
 })
