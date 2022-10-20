@@ -26,6 +26,28 @@ export const addBolus = createAsyncThunk(
   }
 );
 
+export const getDayLog = createAsyncThunk(
+  'addBolus',
+  async ({ date, userId }) => {
+    try {
+      const jwt = await AsyncStorage.getItem('token');
+      const res = await axios.post(
+        'http://localhost:3000/api/bolus/get-log',
+        {
+          userId: userId,
+          date: date
+        },
+        {
+          header: {Authorization: `Bearer ${jwt}`}
+        }
+      );
+      return res.data;
+    } catch (err) {
+      console.error(`Error!: ${err}`);
+    }
+  }
+);
+
 export const bolusSlice = createSlice({
   name:'bolus',
   initialState: {
@@ -44,6 +66,16 @@ export const bolusSlice = createSlice({
         state.loading = false;
       })
       .addCase(addBolus.rejected, (state) => {
+        state.error = true;
+      })
+      .addCase(getDayLog.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getDayLog.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.value = payload.result;
+      })
+      .addCase(getDayLog.rejected, (state) => {
         state.error = true;
       })
   }

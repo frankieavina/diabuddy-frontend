@@ -30,7 +30,6 @@ export const getBasalTest = createAsyncThunk(
   'getTest',
   async ( id ) => {
     id = Math.floor(id); 
-    console.log('ID:', id)
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
@@ -51,12 +50,13 @@ export const getBasalTest = createAsyncThunk(
 
 export const deleteBasalTest = createAsyncThunk(
   'deleteTest',
-  async ( userId ) => {
+  async ( testId ) => {
     try {
-      const res = await axios.delete(
+      const jwt = await AsyncStorage.getItem('token');
+      const res = await axios.post(
         'http://localhost:3000/api/basal/delete-test',
         {
-          userId
+          testId
         },
         {
           headers: {Authorization: `Bearer ${jwt}`}
@@ -94,7 +94,6 @@ export const basalSlice = createSlice({
       })
       .addCase(getBasalTest.fulfilled, (state, { payload }) => {
         state.loading = false;
-        console.log('Payload:', payload.result.tests)
         state.value = payload.result.tests;
       })
       .addCase(getBasalTest.rejected, (state) => {
