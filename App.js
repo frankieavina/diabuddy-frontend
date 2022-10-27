@@ -90,7 +90,7 @@ function Navigation() {
     // add a dynamic variable from userslice that changes from
     // AuthStack to AuthenticatedStack 
     <NavigationContainer>
-      { (!isAuthenticated)
+      { (isAuthenticated)
         ?
           <AuthenticatedStack />
         :

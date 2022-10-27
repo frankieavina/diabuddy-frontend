@@ -4,15 +4,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const addBasalTest = createAsyncThunk(
   'addTest',
-  async ({ numTest, glucose,date }) => {
+  async ({ numTest, glucose,date, userId }) => {
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/auth/signin',
+        'http://localhost:3000/api/basal/add-test',
         {
-          numTest: numTest,
-          glucose: glucose,
-          date: date
+          numTest,
+          glucose,
+          time: date,
+          userId
+        },
+        {
+          header: {Authorization: `Bearer ${jwt}`}
+        }
+      );
+      return res.data;
+    } catch (err) { 
+      console.error(`Error!: ${err}`);
+    }
+  }
+);
+
+export const getBasalTest = createAsyncThunk(
+  'getTest',
+  async ( id ) => {
+    id = Math.floor(id); 
+    try {
+      const jwt = await AsyncStorage.getItem('token');
+      const res = await axios.post(
+        'http://localhost:3000/api/basal/get-test',
+        {
+          userId: id
         },
         {
           header: {Authorization: `Bearer ${jwt}`}
@@ -27,12 +50,16 @@ export const addBasalTest = createAsyncThunk(
 
 export const deleteBasalTest = createAsyncThunk(
   'deleteTest',
-  async ({ id }) => {
+  async ( testId ) => {
     try {
+      const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/auth/signup',
+        'http://localhost:3000/api/basal/delete-test',
         {
-            headers: {Authorization: `Bearer ${jwt}`}
+          testId
+        },
+        {
+          headers: {Authorization: `Bearer ${jwt}`}
         });
       return res.data;
     } catch (err) {
@@ -43,10 +70,9 @@ export const deleteBasalTest = createAsyncThunk(
 );
 
 export const basalSlice = createSlice({
-  name: 'user',
+  name: 'basal',
   initialState: {
     value: {},
-    loggedIn: false,
     loading: false,
     error: false
   },
@@ -61,6 +87,16 @@ export const basalSlice = createSlice({
         state.loading = false;
       })
       .addCase(addBasalTest.rejected, (state) => {
+        state.error = true;
+      })
+      .addCase(getBasalTest.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getBasalTest.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.value = payload.result.tests;
+      })
+      .addCase(getBasalTest.rejected, (state) => {
         state.error = true;
       })
       .addCase(deleteBasalTest.pending, (state) => {

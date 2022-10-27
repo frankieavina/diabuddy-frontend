@@ -1,44 +1,70 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import { Colors } from '../constants/colors';
 import { Button } from '@rneui/themed';
+import BolusLogScreen from './BolusLogScreen';
+import { Chip } from '@rneui/themed';
 
 const MonthLogScreen = () => {
+  const [selectedDay, setSelectedDay] = useState('');
+  const [view, setView] = useState(false);
+
+  const viewLog = () => {
+    setView(!view);
+  }
   
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.headingContainer}>
-          Select Day to View Log
-        </Text>
-      </View>
-      <View style={styles.calenderContainer}>
-        <Calendar
-        theme={{
-          selectedDayTextColor: Colors.accent800,
-          selectedDayBackgroundColor: Colors.primary500,
-          todayTextColor: Colors.primary500,
-          monthTextColor: Colors.primary500,
-          indicatorColor: Colors.primary500,
-          arrowColor: Colors.primary700,
-        }}
-          // Handler which gets executed on day press. Default = undefined
-          onDayPress={day => {
-            console.log('selected day', day);
-          }}
-          // Handler which gets executed on day long press. Default = undefined
-          onDayLongPress={day => {
-            console.log('selected day', day);
-          }}
-        />
-      </View>
-      <View style={styles.button}>
-        <Button size='lg' title='View Log' buttonStyle={{backgroundColor:Colors.primary500}} />
-        <Button size='lg' title='Cancel' type="outline" buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}}/>
-      </View>
-    </View>
+      {(!view)
+        ?
+          <>
+            <View>
+              <Text style={styles.headingContainer}>
+                Select Day to View Log
+              </Text>
+            </View>
+            <View style={styles.calenderContainer}>
+              <Calendar
+              theme={{
+                selectedDayTextColor: Colors.primary600,
+                selectedDayBackgroundColor: Colors.icon800,
+                todayTextColor: Colors.primary500,
+                monthTextColor: Colors.primary500,
+                indicatorColor: Colors.primary500,
+                arrowColor: Colors.primary700,
+              }}
+                // Handler which gets executed on day press. Default = undefined
+                onDayPress={day => {
+                  setSelectedDay(day);
+                }}
+                // Handler which gets executed on day long press. Default = undefined
+                onDayLongPress={day => {
+                  console.log('selected day', day);
+                }}
+              />
+            </View>
+            { selectedDay.dateString 
+              ?
+              <View style={styles.yoContainer}>
+                <Text style={styles.yo}>Selected Day:</Text>
+                <Chip title={selectedDay.dateString} containerStyle={{ marginVertical: 15}} buttonStyle={{backgroundColor:Colors.icon500}} />
+              </View>
+              :
+              <View>
+                <Chip title='Please select the day you would like to view' disabled containerStyle={{ marginVertical: 15, marginLeft:20, marginRight:20 }}/>
+              </View>
+            }
 
+            <View style={styles.button}>
+              <Button size='lg' title='View Log' buttonStyle={{backgroundColor:Colors.primary500}} onPress={viewLog}/>
+            </View>
+          </>
+        :
+          <BolusLogScreen selectedDay={selectedDay} onPress={viewLog}/>
+      }
+
+    </View>
   )
 }
 
@@ -65,10 +91,18 @@ const styles = StyleSheet.create({
   },
   button:{
     flex:1,
-    marginTop: 40,
+    marginTop: 20,
     padding:20,
     flex:1,
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  yo:{
+    color: Colors.icon500,
+  },
+  yoContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   }
 })

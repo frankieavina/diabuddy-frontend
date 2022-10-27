@@ -35,6 +35,17 @@
         {
           "cameraPermission": "The app accesses your camera in order to take pictures of your favorite beer or crazy hair day photo!"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
       ]
     ]
   }

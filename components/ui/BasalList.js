@@ -1,38 +1,31 @@
 import React, { useState } from 'react'
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FlatList, Pressable, SafeAreaView, View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useDispatch } from 'react-redux';
 import { Colors } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Badge } from "@rneui/themed";
 
-const DATA = [
-    {
-      id: "1",
-      title: "Start:",
-      dateTime: "127 mg/dL"
-    },
-    {
-      id: "2",
-      title: "+1:",
-      dateTime: '230 mg/dL'
-    },
-    {
-      id: "3",
-      title: "+2:",
-      dateTime: '80 mg/dL'
-    },
-  ];
+import { deleteBasalTest, getBasalTest } from '../../store/BasalTestingSlice';
 
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+
+const Item = ({ item, onPress, backgroundColor, textColor, onDelete }) => (
+  <View style={styles.list}>
     <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.title}</Text>
-      <Badge status="primary" value={item.dateTime} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
-      <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
+      <Text style={[styles.title, textColor]}>{item.numberOfTest}</Text>
+      <Badge status="primary" value={item.glucose} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
     </TouchableOpacity>
-  );
+    <Pressable style={styles.trash} onPress={() => onDelete(item.id)}>
+      <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
+    </Pressable>
+  </View>
 
-const BasalList = () => {
+);
+
+const BasalList = ({ basalTests, userId }) => {
     const [selectedId, setSelectedId] = useState(null);
+    const dispatch = useDispatch();
 
+    ////////////////////////////////////////////////////////////////////////////
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? Colors.icon800 : 'white';
         const color = item.id === selectedId ? Colors.icon500 : Colors.icon500;
@@ -43,14 +36,20 @@ const BasalList = () => {
             onPress={() => setSelectedId(item.id)}
             backgroundColor={{ backgroundColor }}
             textColor={{ color }}
+            onDelete={ async (id) =>{
+              
+              await dispatch(deleteBasalTest(id));
+              await dispatch(getBasalTest(userId));
+            }}
           />
         );
     };
+    ////////////////////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
         <FlatList
-            data={DATA}
+            data={basalTests}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}
@@ -64,12 +63,15 @@ export default BasalList
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 20,
+        marginRight: 20,
+        marginLeft: 10,
+        marginBottom: 20,
       },
       item: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         padding: 12,
+        width: '75%',
         marginVertical: 8,
         marginHorizontal: 16,
         borderRadius: 4,
@@ -81,6 +83,15 @@ const styles = StyleSheet.create({
       },
       title: {
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        padding: 5,
+        paddingRight: 0,
       },
+      list:{
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+      },
+      trash:{
+        marginTop:17
+      }
 })

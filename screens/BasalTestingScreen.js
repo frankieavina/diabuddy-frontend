@@ -1,5 +1,5 @@
-import { ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import { Pressable, StyleSheet, Text, View, Alert} from 'react-native';
+import React, { useEffect } from 'react';
 import SelectBox from 'react-native-multi-selectbox';
 import { Colors } from '../constants/colors';
 import { Input } from "@rneui/themed";
@@ -8,8 +8,10 @@ import { Button } from '@rneui/themed';
 import { Card } from '@rneui/themed';
 import { Divider } from "@rneui/themed";
 import BasalList from '../components/ui/BasalList';
-import { useDispatch } from 'react-redux';
-import { addBasalTest, deleteBasalTest } from '../store/BasalTestingSlice';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { addBasalTest, getBasalTest } from '../store/BasalTestingSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 
 const K_OPTIONS = [
   {
@@ -39,28 +41,57 @@ const K_OPTIONS = [
 ]
 
 const BasalTestingScreen = () => {
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const basalTests = useSelector(
+    (state) => state.basal.value,
+    shallowEqual
+  );
+
+  const [userId , setUserId] = useState('');
+  const [show, setShow] = useState(false);
   const [basalTime, setBasalTime] = useState({});
   const [glucose, setGlucose] = useState('');
 
-  const onSave = () =>{
-    console.log("Time and glucose",basalTime.item,glucose,Date.now())
-    dispatch(addBasalTest({numTest: basalTime.item, glucose, date: Date.now()}))
+  useEffect(() => {
+    const getUserId = async () =>{
+      await AsyncStorage.getItem('id')
+        .then((id) => {
+          setUserId(id);
+          dispatch(getBasalTest(id));
+        })
+    }
+    getUserId();
+  },[]);
+
+  const onSave = async () =>{
+    if(glucose.length > 0 || basalTime.length > 0){
+      onReset();
+      await dispatch(addBasalTest({numTest: basalTime.item, glucose, date: Date.now(), userId}));
+      await dispatch(getBasalTest(userId)); 
+    }else{
+      return Alert.alert(
+        'Submission failed!',
+        'Please check your inputs or try again later!'
+      );
+    }
   }
 
   const onReset = () =>{
     setBasalTime({});
     setGlucose('');
-    setDate('');
   }
 
   function onChange() {
     return (val) => setBasalTime(val)
   }
 
+  const toggleShowAlarm = () =>{
+    setShow(!show);
+  }
+
   return (
-  <View>
+  <View style={{ flex: 1 }}>
     <View>
       <Text style={styles.titleText}> Basal Rate Test</Text>
       <Text style={styles.infoText}> 
@@ -68,32 +99,48 @@ const BasalTestingScreen = () => {
         any trouble or questions please contact your doctor.
       </Text>
     </View>
-    <Card>
-      <View style={styles.pickerContainer}>
-        <SelectBox
-          label="Select single"
-          options={K_OPTIONS}
-          value={basalTime}
-          onChange={onChange()}
-          hideInputFilter={false}
-          arrowIconColor={Colors.primary500}
-          width={'50%'}
-        />
-        <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}>
-          {glucose}
-        </Input>
-      </View>
-      <View style={styles.buttonsContainer}>
-        <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSave}>
-          Save
-        </Button> 
-        <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}} onPress={onReset}>
-          Reset
-        </Button> 
-      </View>
-    </Card>
-    <Divider style={{margin:20}}/>
-    <BasalList/>
+    {show
+      ?
+        <View style={styles.card}>
+        <Card>
+          <View style={styles.pickerContainer}>
+            <SelectBox
+              label="Select single"
+              options={K_OPTIONS}
+              value={basalTime}
+              onChange={onChange()}
+              hideInputFilter={false}
+              arrowIconColor={Colors.primary500}
+              width={'50%'}
+            />
+            <Input onChangeText={value => setGlucose(value)} containerStyle={{width: '50%'}} label={'Enter Glucose'} labelStyle={{color: 'gray', fontSize:12}}>
+              {glucose}
+            </Input>
+          </View>
+          <View style={styles.buttonsContainer}>
+            <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}} onPress={toggleShowAlarm}>
+              Cancel
+            </Button> 
+            <Button buttonStyle={{backgroundColor:Colors.primary500}} onPress={onSave}>
+              Save
+            </Button> 
+            <Button type="outline" raised buttonStyle={{borderColor:Colors.primary500}} titleStyle={{ color: Colors.primary500}} onPress={onReset}>
+              Reset
+            </Button> 
+          </View>
+        </Card>
+        </View>
+      :
+        <View style={styles.buttonsContainer2}>
+          <Text style={{fontSize: 25, color:Colors.icon500}}>Add Basal Test</Text>
+          <Pressable onPress={toggleShowAlarm}>
+            <Ionicons name="add-circle-outline" size={30} color={Colors.primary700} />
+          </Pressable>
+        </View>
+    }
+
+    {/* <Divider style={{margin:20}}/> */}
+    <BasalList basalTests={basalTests} userId={userId}/>
   </View>
   )
 }
@@ -132,5 +179,14 @@ const styles = StyleSheet.create({
   },
   inputContainer:{
     margin: 20,
+  },
+  buttonsContainer2:{
+    margin: 20,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  card:{
+    margin: 20
   }
 })
