@@ -1,38 +1,32 @@
 import React, { useState } from 'react'
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FlatList, SafeAreaView, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { Colors } from '../../constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Badge } from "@rneui/themed";
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { deleteReminder,getReminders } from '../../store/ReminderSlice';
 
-const DATA = [
-    {
-      id: "1",
-      title: "First Alarm",
-      dateTime: "Sep 29 2022 10:30 PM"
-    },
-    {
-      id: "2",
-      title: "Test Glucose",
-      dateTime: "Sep 29 2022 10:30 PM"
-    },
-    {
-      id: "3",
-      title: "1234567890",
-      dateTime: "Sep 29 2022 10:30 PM"
-    },
-  ];
 
-  const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-      <Text style={[styles.title, textColor]}>{item.title}</Text>
-        <Badge status="primary" value={item.dateTime} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
-      <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
-    </TouchableOpacity>
+  const Item = ({ item, onPress, backgroundColor, textColor, onDelete }) => (
+    <View style={styles.list}>
+      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+        <Text style={[styles.title, textColor]}>{item.name}</Text>
+          <Badge status="primary" value={moment(item.time).format('L').toString()} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
+          <Badge status="primary" value={moment(item.time).format('LT').toString()} badgeStyle={{backgroundColor: Colors.primary700, marginTop:5}}/>
+      </TouchableOpacity>
+      <Pressable style={styles.trash} onPress={() => onDelete(item.id)}>
+        <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
+      </Pressable>  
+    </View>
+
   );
 
-const ListCard = () => {
+const ListCard = ({remindersData, userId}) => {
     const [selectedId, setSelectedId] = useState(null);
+    const dispatch = useDispatch();
 
+    /////////////////////////////////////////////////////////////////////////
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? Colors.icon800 : 'white';
         const color = item.id === selectedId ? Colors.icon500 : Colors.icon500;
@@ -43,14 +37,19 @@ const ListCard = () => {
             onPress={() => setSelectedId(item.id)}
             backgroundColor={{ backgroundColor }}
             textColor={{ color }}
+            onDelete={ async (id) =>{
+              await dispatch(deleteReminder(id));
+              await dispatch(getReminders(userId));
+            }}
           />
         );
     };
+    /////////////////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
         <FlatList
-            data={DATA}
+            data={remindersData}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             extraData={selectedId}
@@ -71,16 +70,26 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 12,
         marginVertical: 8,
-        marginHorizontal: 16,
+        //marginHorizontal: 10,
         borderRadius: 4,
         elevation: 2,
         shadowColor: 'black',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.35,
         shadowRadius: 4,
+        width: '78%'
       },
       title: {
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        padding: 5,
+        paddingRight: 0
       },
+      list:{
+        flexDirection: 'row',
+        justifyContent: 'space-around'
+      },
+      trash:{
+        marginTop:17
+      }
 })

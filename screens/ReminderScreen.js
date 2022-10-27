@@ -1,6 +1,6 @@
-import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React , { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import React , { useState, useEffect, useCallback } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Input } from "@rneui/themed";
 import { Colors } from '../constants/colors';
 import { Button } from '@rneui/themed';
@@ -11,8 +11,9 @@ import moment from 'moment';
 import ListCard from '../components/ui/ListCard';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
-import { StatusBar } from 'expo-status-bar';
 import { addReminder } from '../store/ReminderSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getReminders } from '../store/ReminderSlice';
 
 // settings for notification so just show alert (no sound or badge)
 Notifications.setNotificationHandler({
@@ -27,12 +28,36 @@ Notifications.setNotificationHandler({
 
 const ReminderScreen = () => {
   const now = moment();
+  const [userId, setUserId] = useState('');
+  const [alarmsId, setAlarmsId] = useState([0]);
   const [name, setName] = useState('');
-  const [dateTime, setDateTime] = useState(now.format("MM DD YYYY hh:mm"));
+  const [dateTime, setDateTime] = useState('')
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [show, setShow] = useState(false);
   const input = React.createRef();
   const dispatch = useDispatch();
+  const remindersData = useSelector((state) => state.reminder.value, shallowEqual);
+
+  useEffect(() => {
+    // fetch user id and reminder associated to that user
+    const getUserId = async () =>{
+      await AsyncStorage.getItem('id')
+        .then((id) => {
+          setUserId(id);
+          dispatch(getReminders(id));
+        })
+
+    // initiate reminders
+      if(JSON.stringify(remindersData) !== '{}'){
+          remindersData.forEach(({name, time, id}) => {
+           scheduleNotificationHandler(name, time, id);
+        });
+      }
+      
+    }
+
+    getUserId();
+  },[remindersData.length]);
 
   //************** local handler ******************************//
   useEffect(() => {
@@ -75,17 +100,31 @@ const ReminderScreen = () => {
   }, []);
 
   //********************* scheduling notification(s) *****************/
-  const scheduleNotificationHandler = async () => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "You've got mail! 📬",
-        body: 'Here is the notification body',
-        data: { userName: 'Max' }
-      },
-      trigger: {
-        seconds: 5
-      }
-    });
+  const scheduleNotificationHandler = async (title,time,id) => {
+
+    const now  = new Date().getTime();
+    const then = new Date(time);
+    const tsec= Math.round((then-now)/1000);
+    console.log(`Time Difference = ${tsec}s`);
+    if(alarmsId.indexOf(id) !== -1){
+      console.log('Alarm already exist')
+      return ;
+    }else{
+      setAlarmsId((prevState) =>[...prevState, id]);
+      ///////////////////////////scheduling alarms in seconds////////////////////////////////////
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "You've got a reminder! 📬",
+          body: `${title}`,
+          data: { userName: 'Max' }
+        },
+        trigger: {
+          seconds: tsec
+        }
+      });
+      ////////////////////////////////////////////////////////////////
+    }
+
   }
 
   const showDatePicker = () => {
@@ -97,26 +136,29 @@ const ReminderScreen = () => {
     toggleShowAlarm();
   };
 
-  const handleConfirm = (date) => {
-    const d = moment(date);
-    const m = d.format("LLL")
-    setDateTime(m);
-    hideDatePicker();
+  const handleConfirm = (time) => {
+    const d = moment(time).format();
+    //const m = d.format('YYYY-MM-DD hh:mm:ss');
+    setDateTime(d);
+    setDatePickerVisibility(false);
   };
 
-  const onSubmit = () => {
-    dispatch(addReminder({name, dateTime}))
-    scheduleNotificationHandler();
+  const onSubmit = async () => {
+    await dispatch(addReminder({name, dateTime, userId}))
+    await dispatch(getReminders(userId))
   }
 
   const toggleShowAlarm = () =>{
     setShow(!show);
   }
 
-
   return (
     <View style={styles.notificationContainer}>
       {show? 
+      <>
+      <View style={styles.title}>
+        <Text style={{fontSize: 25, color:Colors.icon500}}>Add Alarm</Text>
+      </View>
       <Card style={styles.formContent}>
         <View style={styles.form}>
           <Input 
@@ -143,6 +185,7 @@ const ReminderScreen = () => {
                 mode="datetime"
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
+                locale="en_GB"
               />
             </Pressable>
           </View>
@@ -156,6 +199,7 @@ const ReminderScreen = () => {
           </Button> 
         </View>
       </Card>
+      </>
       : 
         <View style={styles.buttonsContainer}>
           <Text style={{fontSize: 25, color:Colors.icon500}}>Add Alarm</Text>
@@ -164,7 +208,7 @@ const ReminderScreen = () => {
           </Pressable>
         </View>
       }
-      <ListCard/> 
+      <ListCard remindersData={remindersData} userId={userId}/> 
     </View>
 
   )
@@ -199,8 +243,12 @@ const styles = StyleSheet.create({
   },
   buttonsContainer:{
     margin: 20,
-    padding: 20,
+    //padding: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start'
+  },
+  title:{
+    margin: 20,
+    marginBottom: 0
   }
 })

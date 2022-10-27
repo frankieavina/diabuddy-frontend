@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 export const addReminder = createAsyncThunk(
   'addReminder',
-  async ({ name,dateTime }) => {
+  async ({ name,dateTime, userId }) => {
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/auth/signin',
+        'http://localhost:3000/api/reminder/add-reminder',
         {
+          userId,
           name,
           dateTime
         },
@@ -26,10 +28,14 @@ export const addReminder = createAsyncThunk(
 
 export const deleteReminder = createAsyncThunk(
   'deleteReminder',
-  async ({ id }) => {
+  async ( id ) => {
     try {
-      const res = await axios.delete(
-        'http://localhost:3000/api/auth/signup',
+      const jwt = await AsyncStorage.getItem('token');
+      const res = await axios.post(
+        'http://localhost:3000/api/reminder/delete-reminder',
+        {
+          id
+        },
         {
             headers: {Authorization: `Bearer ${jwt}`}
         });
@@ -43,10 +49,14 @@ export const deleteReminder = createAsyncThunk(
 
 export const getReminders = createAsyncThunk(
     'getReminders',
-    async ({ id }) => {
+    async ( id ) => {
       try {
-        const res = await axios.get(
-          'http://localhost:3000/api/auth/signup',
+        const jwt = await AsyncStorage.getItem('token');
+        const res = await axios.post(
+          'http://localhost:3000/api/reminder/get-reminders',
+          {
+            userId: id
+          },
           {
               headers: {Authorization: `Bearer ${jwt}`}
           });
@@ -92,6 +102,7 @@ export const reminderSlice = createSlice({
       })
       .addCase(getReminders.fulfilled, (state, { payload }) => {
         state.loading = false;
+        state.value = payload.result.reminders;
       })
       .addCase(getReminders.rejected, (state) => {
         state.error = true;

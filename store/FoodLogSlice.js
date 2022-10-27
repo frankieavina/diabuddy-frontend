@@ -27,7 +27,7 @@ export const addBolus = createAsyncThunk(
 );
 
 export const getDayLog = createAsyncThunk(
-  'addBolus',
+  'getBolus',
   async ({ date, userId }) => {
     try {
       const jwt = await AsyncStorage.getItem('token');

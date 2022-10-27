@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { getDayLog } from '../store/FoodLogSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 
 const BolusLogScreen = ({selectedDay,onPress}) => {
@@ -31,9 +32,8 @@ const BolusLogScreen = ({selectedDay,onPress}) => {
     },[]);
 
     //to converting array of objects to array of array with values only
-    const data = [...dayLog].map((object) => Object.values(object))
-
-    console.log(data)
+    const dataBefore = [...dayLog].map((object) => Object.values(object));
+    const data = [...dataBefore].map((data) => [moment(data[4]).format('HH:mm'), data[1], data[3], data[2]])
 
   return (
     <>

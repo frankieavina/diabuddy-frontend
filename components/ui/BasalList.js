@@ -37,7 +37,7 @@ const BasalList = ({ basalTests, userId }) => {
             backgroundColor={{ backgroundColor }}
             textColor={{ color }}
             onDelete={ async (id) =>{
-              console.log('ID:',id)
+              
               await dispatch(deleteBasalTest(id));
               await dispatch(getBasalTest(userId));
             }}
