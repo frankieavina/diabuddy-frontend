@@ -3,6 +3,7 @@ import {APP_ID} from '@env';
 import {APP_KEY} from '@env';
 import { Alert } from 'react-native';
 
+
 const promiseFood = async (food) =>{
     let carbs = await axios(
         `https://api.edamam.com/api/food-database/v2/parser?app_id=${APP_ID}&app_key=${APP_KEY}&ingr=${food}&nutrition-type=logging&category=generic-foods`

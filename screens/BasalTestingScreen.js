@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, Alert} from 'react-native';
+import { Pressable, StyleSheet, Text, View, Alert, Keyboard, ImageBackground} from 'react-native';
 import React, { useEffect } from 'react';
 import SelectBox from 'react-native-multi-selectbox';
 import { Colors } from '../constants/colors';
@@ -69,6 +69,7 @@ const BasalTestingScreen = () => {
       onReset();
       await dispatch(addBasalTest({numTest: basalTime.item, glucose, date: Date.now(), userId}));
       await dispatch(getBasalTest(userId)); 
+      Keyboard.dismiss();
     }else{
       return Alert.alert(
         'Submission failed!',
@@ -92,6 +93,12 @@ const BasalTestingScreen = () => {
 
   return (
   <View style={{ flex: 1 }}>
+          <ImageBackground
+        source={require('./../assets/images/log.jpg')} 
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
     <View>
       <Text style={styles.titleText}> Basal Rate Test</Text>
       <Text style={styles.infoText}> 
@@ -129,6 +136,7 @@ const BasalTestingScreen = () => {
             </Button> 
           </View>
         </Card>
+        
         </View>
       :
         <View style={styles.buttonsContainer2}>
@@ -141,6 +149,7 @@ const BasalTestingScreen = () => {
 
     {/* <Divider style={{margin:20}}/> */}
     <BasalList basalTests={basalTests} userId={userId}/>
+    </ImageBackground>
   </View>
   )
 }
@@ -188,5 +197,11 @@ const styles = StyleSheet.create({
   },
   card:{
     margin: 20
+  },
+  rootScreen:{
+    flex:1
+  },
+  backgroundImage:{
+    opacity: 0.15
   }
 })

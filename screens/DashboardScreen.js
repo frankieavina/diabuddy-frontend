@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, ImageBackground } from 'react-native';
 import React from 'react';
 import { Card } from '@rneui/themed'
 import DashboardCard from '../components/ui/DashboardCard';
@@ -11,6 +11,12 @@ const DashboardScreen = () => {
   return (
     <>
       <ScrollView>
+      <ImageBackground
+        source={require('./../assets/images/food.jpg')} 
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
         <View>
           <Text style={styles.headerText}>Hi {user.name}!</Text>
           <Text style={styles.headerText2}>Here are you daily reports</Text>
@@ -23,7 +29,9 @@ const DashboardScreen = () => {
           <DashboardCard style={styles.innerContainer}  header={'Steps'} data={'1200 steps'} iconPic={'walk-outline'}/>
           <DashboardCard style={styles.innerContainer}  header={'Pulse'} data={'96 bpm'} iconPic={'fitness-outline'}/>
         </View>
+      </ImageBackground>
       </ScrollView>
+      
     </>
     
   )
@@ -33,7 +41,8 @@ export default DashboardScreen
 
 const styles = StyleSheet.create({
   container:{
-    flex: 1
+    flex: 1,
+    paddingBottom: 20
   },
   innerContainer:{
     width: '50%'
@@ -54,5 +63,11 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'start',
     textColor: Colors.primary800
+  },
+  rootScreen:{
+    flex:1
+  },
+  backgroundImage:{
+    opacity: 0.15
   }
 })

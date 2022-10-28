@@ -2,7 +2,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { StyleSheet , ImageBackground} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Colors } from './constants/colors';
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,11 +50,17 @@ function AuthStack() {
 ////////////////// if user logged in ////////////////
 function AuthenticatedStack() {
   return (
+    <ImageBackground
+    source={require('./assets/images/background1.jpg')} 
+    resizeMode="cover"
+    style={styles.rootScreen}
+    imageStyle={styles.backgroundImage}
+  >
     <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: Colors.primary500 },
         headerTintColor: 'white',
-        contentStyle: { backgroundColor: Colors.primary700 },
+        // contentStyle: { backgroundColor: Colors.primary700 },
       }}
     >
       <Stack.Screen name='LandingPage' component={DrawerNavigator} 
@@ -68,6 +74,7 @@ function AuthenticatedStack() {
         }} 
       />
     </Stack.Navigator>
+    </ImageBackground>
   );
 }
 

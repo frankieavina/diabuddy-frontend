@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "diabuddy-frontend",
+    "name": "My DiaBuddy",
     "slug": "diabuddy-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,13 +18,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.frankieavina.diabuddyfrontend"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -47,6 +52,11 @@
           ]
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1654e293-6c4b-44d0-84c1-30be5fc9922d"
+      }
+    }
   }
 }

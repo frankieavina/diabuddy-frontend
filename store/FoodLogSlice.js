@@ -4,16 +4,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const addBolus = createAsyncThunk(
   'addBolus',
-  async ({ glucose, carbs, bolus, date }) => {
+  async ({ glucose, carbs, bolus, date, userId }) => {
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app//api/auth/signin',
+        'https://diabuddy-mysql-backend-production.up.railway.app/api/bolus/add-bolus',
         {
-          bolus: bolus,
-          carbs: carbs,
-          glucose: glucose,
-          date: date
+          bolus,
+          carbs,
+          glucose,
+          date,
+          userId
         },
         {
           header: {Authorization: `Bearer ${jwt}`}
@@ -32,7 +33,7 @@ export const getDayLog = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app//api/bolus/get-log',
+        'https://diabuddy-mysql-backend-production.up.railway.app/api/bolus/get-log',
         {
           userId: userId,
           date: date

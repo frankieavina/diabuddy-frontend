@@ -9,7 +9,7 @@ export const addReminder = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app//api/reminder/add-reminder',
+        'https://diabuddy-mysql-backend-production.up.railway.app/api/reminder/add-reminder',
         {
           userId,
           name,
@@ -32,7 +32,7 @@ export const deleteReminder = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app//api/reminder/delete-reminder',
+        'https://diabuddy-mysql-backend-production.up.railway.app/api/reminder/delete-reminder',
         {
           id
         },
@@ -53,7 +53,7 @@ export const getReminders = createAsyncThunk(
       try {
         const jwt = await AsyncStorage.getItem('token');
         const res = await axios.post(
-          'https://diabuddy-mysql-backend-production.up.railway.app//api/reminder/get-reminders',
+          'https://diabuddy-mysql-backend-production.up.railway.app/api/reminder/get-reminders',
           {
             userId: id
           },

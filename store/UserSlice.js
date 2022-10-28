@@ -7,7 +7,7 @@ export const userLogIn = createAsyncThunk(
   async ({ email, password }) => {
     try {
       const backendRes = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app//api/auth/signin',
+        'https://diabuddy-mysql-backend-production.up.railway.app/api/auth/signin',
         {
           email: email,
           password: password
@@ -25,7 +25,7 @@ export const userRegister = createAsyncThunk(
   async ({ email, password, name }) => {
     try {
       const backendRes = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app//api/auth/signup',
+        'https://diabuddy-mysql-backend-production.up.railway.app/api/auth/signup',
         {
           name: name,
           email: email,

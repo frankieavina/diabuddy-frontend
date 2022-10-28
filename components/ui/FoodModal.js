@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput,ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Colors } from '../../constants/colors';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
@@ -19,7 +19,9 @@ const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
     }
 
     return (
+      
       <View style={styles.centeredView}>
+        
         <Modal
           animationType="slide"
           transparent={true}
@@ -35,6 +37,7 @@ const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
                 <Card style={styles.formContent}>
                     <View style={styles.form}>
                     <TextInput
+                        blurOnSubmit={true}
                         multiline={true}
                         numberOfLines={4}
                         onChangeText={(text) => setSearchText(text)}
@@ -62,6 +65,7 @@ const FoodModal = ({onVisible, modalVisible,setTotalCarbs}) => {
           </View>
         </Modal>
       </View>
+      
     );
 }
 

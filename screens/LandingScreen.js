@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View , ImageBackground} from 'react-native';
 import React from 'react';
 import { Button } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,8 +18,14 @@ const LandingScreen = () => {
 
   return (
     <View style={styles.rootContainer}>
+    <ImageBackground
+      source={require('./../assets/images/background1.jpg')} 
+      resizeMode="cover"
+      style={styles.rootScreen}
+      imageStyle={styles.backgroundImage}
+    >
       <View style={styles.logoContainer}>
-        <View><Ionicons name='logo-tux' size={50} color='black'/></View>
+        <View><Ionicons name='nutrition-outline' size={50} color='black'/></View>
         <View>
           <Text style={styles.logoText}>
             DiaBuddy
@@ -34,6 +40,7 @@ const LandingScreen = () => {
         <Button size='lg' title='Sign In' buttonStyle={{backgroundColor:Colors.primary500}} onPress={signInHandler}/>
         <Button size='lg' title='Sign Up' buttonStyle={{backgroundColor:Colors.primary500}} onPress={signUpHandler}/>
       </View>
+    </ImageBackground>
     </View>
   )
 }
@@ -77,4 +84,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     marginTop:75
   },
+  rootScreen:{
+    flex:1
+  },
+  backgroundImage:{
+    opacity: 0.15
+  }
 })

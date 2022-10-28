@@ -1,22 +1,35 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard, Alert, ImageBackground} from 'react-native';
 import React from '@rneui/themed';
 import { Colors } from '../constants/colors';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@rneui/themed';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import FoodModal from '../components/ui/FoodModal';
 import { useDispatch } from 'react-redux';
 import { addBolus } from '../store/FoodLogSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const AddFoodScreen = () => {
   const dispatch = useDispatch();
 
+  const [userId , setUserId] = useState('');
   const [glucose, setGlucose] = useState(0);
-  const [carbs, setCarbs] = useState(0);
+  const [carbs, setCarbs] = useState();
   const [bolus, setBolus] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [isDis, setIsDis] = useState(false);
+
+  useEffect(() => {
+    const getUserId = async () =>{
+      await AsyncStorage.getItem('id')
+        .then((id) => {
+          setUserId(id);
+        })
+    }
+    getUserId();
+  },[]);
 
 
   const onSubmit = () =>{
@@ -24,12 +37,17 @@ const AddFoodScreen = () => {
       date: Date.now(),
       glucose: glucose,
       carbs: carbs,
-      bolus: bolus
+      bolus: bolus,
+      userId
     })); 
     setGlucose(0);
     setCarbs(0);
     setBolus(0);
     setIsDis(false);
+    Alert.alert(
+      'Bolus Wizard was Added!',
+      'Please make sure to comeback and log your next bolus!'
+    );
   }
 
   const toggleCarbsModal = () => {
@@ -42,7 +60,14 @@ const AddFoodScreen = () => {
   }
 
   return (
-    <View style={styles.bolusWizardContainer}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View  style={styles.bolusWizardContainer}>
+    <ImageBackground
+        source={require('./../assets/images/food.jpg')} 
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
       <View style={styles.title}>
         <Text style={{fontSize: 20, textAlign: 'center'}}>
           Bolus Wizard
@@ -82,7 +107,7 @@ const AddFoodScreen = () => {
               </Ionicons>
             } 
             labelStyle={{color: Colors.primary500, fontSize:12}}
-          />
+          >{carbs}</Input>
         </View>
       </Card>
       <Card style={styles.formContent}>
@@ -109,7 +134,9 @@ const AddFoodScreen = () => {
         </Button>  
       </View>   
       {modalVisible && <FoodModal onVisible={toggleCarbsModal} modalVisible={modalVisible} setTotalCarbs={setCarbsTotal}/>}
+      </ImageBackground>
     </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -138,5 +165,11 @@ const styles = StyleSheet.create({
   title:{
     margin: 20,
     padding: 20,
+  },
+  rootScreen:{
+    flex:1
+  },
+  backgroundImage:{
+    opacity: 0.15
   }
 })

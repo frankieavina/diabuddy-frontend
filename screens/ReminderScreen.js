@@ -1,4 +1,4 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Keyboard, Pressable, StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React , { useState, useEffect, useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Input } from "@rneui/themed";
@@ -146,6 +146,7 @@ const ReminderScreen = () => {
   const onSubmit = async () => {
     await dispatch(addReminder({name, dateTime, userId}))
     await dispatch(getReminders(userId))
+    Keyboard.dismiss();
   }
 
   const toggleShowAlarm = () =>{
@@ -154,6 +155,12 @@ const ReminderScreen = () => {
 
   return (
     <View style={styles.notificationContainer}>
+      <ImageBackground
+        source={require('./../assets/images/alarm2.jpg')} 
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
       {show? 
       <>
       <View style={styles.title}>
@@ -209,6 +216,7 @@ const ReminderScreen = () => {
         </View>
       }
       <ListCard remindersData={remindersData} userId={userId}/> 
+      </ImageBackground>
     </View>
 
   )
@@ -250,5 +258,11 @@ const styles = StyleSheet.create({
   title:{
     margin: 20,
     marginBottom: 0
+  },
+  rootScreen:{
+    flex:1
+  },
+  backgroundImage:{
+    opacity: 0.15
   }
 })

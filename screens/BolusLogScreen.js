@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { Colors } from '../constants/colors';
 import { Card } from '@rneui/themed';
@@ -36,7 +36,13 @@ const BolusLogScreen = ({selectedDay,onPress}) => {
     const data = [...dataBefore].map((data) => [moment(data[4]).format('HH:mm'), data[1], data[3], data[2]])
 
   return (
-    <>
+    <View style={{flex: 1}}>
+          <ImageBackground
+        source={require('../assets/images/food.jpg')} 
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
         <View>
             <Text style={styles.headingContainer}>
                 Viewing Log for : {selectedDay.dateString}
@@ -54,7 +60,8 @@ const BolusLogScreen = ({selectedDay,onPress}) => {
         <View style={styles.button}>
             <Button size='lg' title='Go Back' buttonStyle={{backgroundColor:Colors.primary500}} onPress={onPress}/>
         </View>
-    </>
+        </ImageBackground>
+    </View>
 
   )
 }
@@ -93,5 +100,11 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection: 'row',
         justifyContent: 'space-around'
+      },
+      rootScreen:{
+        flex:1
+      },
+      backgroundImage:{
+        opacity: 0.15
       }
 })

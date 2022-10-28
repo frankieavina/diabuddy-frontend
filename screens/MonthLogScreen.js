@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React, { useState } from 'react';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import { Colors } from '../constants/colors';
@@ -16,6 +16,12 @@ const MonthLogScreen = () => {
   
   return (
     <View style={styles.container}>
+          <ImageBackground
+        source={require('./../assets/images/calender.jpg')} 
+        resizeMode="cover"
+        style={styles.rootScreen}
+        imageStyle={styles.backgroundImage}
+      >
       {(!view)
         ?
           <>
@@ -63,7 +69,7 @@ const MonthLogScreen = () => {
         :
           <BolusLogScreen selectedDay={selectedDay} onPress={viewLog}/>
       }
-
+    </ImageBackground>
     </View>
   )
 }
@@ -104,5 +110,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center'
+  },
+  rootScreen:{
+    flex:1
+  },
+  backgroundImage:{
+    opacity: 0.15
   }
 })
