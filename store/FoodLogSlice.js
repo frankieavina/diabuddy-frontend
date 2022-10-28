@@ -8,7 +8,7 @@ export const addBolus = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/auth/signin',
+        'https://diabuddy-mysql-backend-production.up.railway.app//api/auth/signin',
         {
           bolus: bolus,
           carbs: carbs,
@@ -32,7 +32,7 @@ export const getDayLog = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/bolus/get-log',
+        'https://diabuddy-mysql-backend-production.up.railway.app//api/bolus/get-log',
         {
           userId: userId,
           date: date
