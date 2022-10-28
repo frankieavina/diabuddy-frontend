@@ -8,7 +8,7 @@ export const addBasalTest = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/basal/add-test',
+        'https://diabuddy-mysql-backend-production.up.railway.app//api/basal/add-test',
         {
           numTest,
           glucose,
@@ -33,7 +33,7 @@ export const getBasalTest = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/basal/get-test',
+        'https://diabuddy-mysql-backend-production.up.railway.app//api/basal/get-test',
         {
           userId: id
         },
@@ -54,7 +54,7 @@ export const deleteBasalTest = createAsyncThunk(
     try {
       const jwt = await AsyncStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3000/api/basal/delete-test',
+        'https://diabuddy-mysql-backend-production.up.railway.app//api/basal/delete-test',
         {
           testId
         },
