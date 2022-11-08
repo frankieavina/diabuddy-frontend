@@ -8,9 +8,9 @@ import {
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setProfileImage } from '../../store/UserSlice';
+import { setProfileImage } from '../../../store/UserSlice';
 
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../constants/colors';
 
 function ImagePicker() {
   const navigation = useNavigation();
