@@ -4,7 +4,7 @@ import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet , ImageBackground} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Colors } from './constants/colors';
+import { Colors } from './utils/constants/colors'
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 
@@ -12,11 +12,10 @@ import DrawerNavigator from './navigation/DrawerNavigation';
 import LandingScreen from './screens/LandingScreen';
 import SignInScreen from './screens/SignInScreen';
 import SignUpScreen from './screens/SignUpScreen';
-import store from './store';
+import store from './app/redux/store';
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { userLoggedIn } from './store/UserSlice';
-import ImageForm from './components/NativeFt/ImageFormScreen';
+import ImageForm from './common/components/NativeFt/ImageFormScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -80,15 +79,12 @@ function AuthenticatedStack() {
 
 //////////// switches between logged in or landing page////////
 function Navigation() {
-  const isAuthenticated = useSelector((state) => state.UserData.loggedIn);
-  const dispatch = useDispatch();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     async function fetchUserExist(){
-      const storedUser = await AsyncStorage.getItem('token');
-      if(storedUser){
-        dispatch(userLoggedIn());
-      }
+      //const storedUser = await AsyncStorage.getItem('token');
+      return 
     }
     fetchUserExist();
   },[]);

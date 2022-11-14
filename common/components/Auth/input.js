@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 
 function Input({
   label,

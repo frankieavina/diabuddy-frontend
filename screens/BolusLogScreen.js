@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, { useEffect, useState } from 'react';
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 import { Card } from '@rneui/themed';
 import { Table, Row, Rows } from 'react-native-table-component';
 import { Button } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { getDayLog } from '../store/FoodLogSlice';
+import { getDayLog } from '../common/api/bolusApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 

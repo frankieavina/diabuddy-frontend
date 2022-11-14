@@ -1,9 +1,8 @@
 import { ScrollView, StyleSheet, Text, View, ImageBackground } from 'react-native';
 import React from 'react';
-import { Card } from '@rneui/themed'
-import DashboardCard from '../components/ui/DashboardCard';
+import DashboardCard from '../common/components/ui/DashboardCard';
 import { useSelector } from 'react-redux';
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 
 const DashboardScreen = () => {
   const user = useSelector((state) => state.UserData.value);

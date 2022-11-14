@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import TabNavigator from '../navigation/TabNavigation';
-import { Colors } from '../constants/colors';
-import { setLogout } from '../store/UserSlice';
+import { Colors } from '../utils/constants/colors';
+// import { setLogout } from '../store/UserSlice';
 import ReminderScreen from '../screens/ReminderScreen';
 
 
@@ -83,13 +83,13 @@ function CustomDrawerContent(props){
           label= {'Settings'}
           labelStyle = {{color: Colors.primary600}}
           icon={({color,size}) => (<Ionicons name='cog-outline' color={Colors.primary600} size={size}/>)}
-          onPress={ ()=> dispatch(setLogout()) }
+          //onPress={ ()=> dispatch(setLogout()) }
         />
         <DrawerItem 
           label= {'Logout'}
           labelStyle = {{color: Colors.primary600}}
           icon={({color,size}) => (<Ionicons name='log-out-outline' color={Colors.primary600} size={size}/>)}
-          onPress={ ()=> dispatch(setLogout()) }
+          //onPress={ ()=> dispatch(setLogout()) }
         />
       </DrawerContentScrollView>      
     </View>

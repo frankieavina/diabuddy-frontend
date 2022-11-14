@@ -1,12 +1,11 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'; 
-import { setupListeners } from '@reduxjs/toolkit/dist/query';
-import { userApi } from '../../common/api/userAPI';
+import { userApi } from '../../common/api/userApi';
 //import userReducer from './UserSlice';
 // import basalReducer from './BasalTestingSlice';
 // import  reminderSlice  from './ReminderSlice';
 // import  bolusSlice  from './FoodLogSlice';
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
     [userApi.reducerPath]: userApi.reducer,
     // basal: basalReducer,
@@ -18,4 +17,3 @@ export default configureStore({
     getDefaultMiddleware().concat(userApi.middleware),
 })
 
-setupListeners(store.dispatch)

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ImageBackground} from 'react-native';
 import React, { useState } from 'react';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 import { Button } from '@rneui/themed';
 import BolusLogScreen from './BolusLogScreen';
 import { Chip } from '@rneui/themed';

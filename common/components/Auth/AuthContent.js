@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Button } from '@rneui/themed';
 
 import AuthForm from './AuthForm';
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 
 function AuthContent({ isLogin, onAuthenticate, onAuthenticateLog}) {
   const navigation = useNavigation();

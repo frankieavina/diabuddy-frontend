@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 
 import { Button } from '@rneui/themed';
 import Input from './input';

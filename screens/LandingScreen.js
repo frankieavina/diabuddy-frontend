@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 
 const LandingScreen = () => {
   const navigation = useNavigation();
