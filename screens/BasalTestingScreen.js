@@ -1,15 +1,15 @@
 import { Pressable, StyleSheet, Text, View, Alert, Keyboard, ImageBackground} from 'react-native';
 import React, { useEffect } from 'react';
 import SelectBox from 'react-native-multi-selectbox';
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 import { Input } from "@rneui/themed";
 import { useState } from 'react';
 import { Button } from '@rneui/themed';
 import { Card } from '@rneui/themed';
 import { Divider } from "@rneui/themed";
-import BasalList from '../components/ui/BasalList';
+import BasalList from '../common/components/ui/BasalList';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { addBasalTest, getBasalTest } from '../store/BasalTestingSlice';
+import { addBasalTest, getBasalTest } from '../app/redux/slices/BasalTestingSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 

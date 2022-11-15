@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import TabNavigator from '../navigation/TabNavigation';
-import { Colors } from '../constants/colors';
-import { setLogout } from '../store/UserSlice';
+import { Colors } from '../utils/constants/colors';
+import { setLogout } from '../app/redux/slices/UserSlice';
 import ReminderScreen from '../screens/ReminderScreen';
 
 

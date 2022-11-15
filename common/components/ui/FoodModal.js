@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TextInput,ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import getCarbs from '../../api/FoodAPI';

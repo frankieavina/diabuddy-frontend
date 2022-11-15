@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { FlatList, Pressable, SafeAreaView, View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useDispatch } from 'react-redux';
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Badge } from "@rneui/themed";
 
-import { deleteBasalTest, getBasalTest } from '../../store/BasalTestingSlice';
+import { deleteBasalTest, getBasalTest } from '../../../app/redux/slices//BasalTestingSlice';
 
 
 const Item = ({ item, onPress, backgroundColor, textColor, onDelete }) => (

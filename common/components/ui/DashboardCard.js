@@ -3,7 +3,7 @@ import React from 'react'
 import { Card } from '@rneui/themed';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Badge } from "@rneui/themed";
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 
 const DashboardCard = ({header, data, iconPic}) => {
   return (

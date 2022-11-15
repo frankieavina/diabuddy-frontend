@@ -2,18 +2,18 @@ import { FlatList, Keyboard, Pressable, StyleSheet, Text, View, ImageBackground}
 import React , { useState, useEffect, useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Input } from "@rneui/themed";
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 import { Button } from '@rneui/themed';
 import { Icon, Card} from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
-import ListCard from '../components/ui/ListCard';
+import ListCard from '../common/components/ui/ListCard';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
-import { addReminder } from '../store/ReminderSlice';
+import { addReminder } from '../app/redux/slices/ReminderSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getReminders } from '../store/ReminderSlice';
+import { getReminders } from '../app/redux/slices/ReminderSlice';
 
 // settings for notification so just show alert (no sound or badge)
 Notifications.setNotificationHandler({

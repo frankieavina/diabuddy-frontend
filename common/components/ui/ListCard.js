@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { FlatList, SafeAreaView, Pressable, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import { Colors } from '../../constants/colors';
+import { Colors } from '../../../utils/constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Badge } from "@rneui/themed";
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
-import { deleteReminder,getReminders } from '../../store/ReminderSlice';
+import { deleteReminder,getReminders } from '../../../app/redux/slices/ReminderSlice';
 
 
   const Item = ({ item, onPress, backgroundColor, textColor, onDelete }) => (

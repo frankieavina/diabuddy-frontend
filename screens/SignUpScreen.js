@@ -2,9 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
 
-import AuthContent from '../components/Auth/AuthContent';
-import LoadingOverlay from '../components/ui/LoadingOverlay';
-import { userRegister } from '../store/UserSlice';
+import AuthContent from '../common/components/Auth/AuthContent';
+import LoadingOverlay from '../common/components/ui/LoadingOverlay';
+import { userRegister } from '../app/redux/slices/UserSlice';
 
 const SignUpScreen = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);

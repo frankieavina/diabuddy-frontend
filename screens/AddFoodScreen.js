@@ -1,13 +1,13 @@
 import { Pressable, StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard, Alert, ImageBackground} from 'react-native';
 import React from '@rneui/themed';
-import { Colors } from '../constants/colors';
+import { Colors } from '../utils/constants/colors';
 import { useState, useEffect } from 'react';
 import { Button } from '@rneui/themed';
 import { Card, Input } from "@rneui/themed";
 import { Ionicons } from '@expo/vector-icons';
-import FoodModal from '../components/ui/FoodModal';
+import FoodModal from '../common/components/ui/FoodModal';
 import { useDispatch } from 'react-redux';
-import { addBolus } from '../store/FoodLogSlice';
+import { addBolus } from '../app/redux/slices/FoodLogSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
