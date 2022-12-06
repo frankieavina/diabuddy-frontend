@@ -11,6 +11,12 @@ import TabNavigator from '../navigation/TabNavigation';
 import { Colors } from '../utils/constants/colors';
 import { setLogout } from '../app/redux/slices/UserSlice';
 import ReminderScreen from '../screens/ReminderScreen';
+import Loading from '../features/loading/loadingScreen'
+
+import AdminBottomTabs from '../features/administrator/adminTabs';
+import DocBottomTabs from '../features/doctor/docTab';
+import AdminMessage from '../features/administrator/screens/MessageScreen';
+import DocMessage from '../features/doctor/screens/MessageScreen';
 
 
 const Drawer = createDrawerNavigator();
@@ -28,18 +34,57 @@ const screenOptionStyle = {
 
 export default function DrawerNavigator() {
 
+  const [role, setRole] = useState(0);
+
+  useEffect(() => {
+    async function fetchUserRole(){
+      const userRole = await AsyncStorage.getItem('role');
+      if(userRole){
+        setRole(userRole);
+      }
+    }
+    fetchUserRole();
+  },[role]);
+
+  const userInfo = useSelector((state) => state.UserData.value, shallowEqual);
+  console.log('userInfo:',(+role))
+
   return (
+    <>
+    {(role != 0) ?
     <Drawer.Navigator 
       screenOptions={screenOptionStyle}
-      drawerContent={(props) => <CustomDrawerContent {...props}/>}
+      drawerContent={(props) => <CustomDrawerContent role={role} {...props}/>}
     >
-      <Drawer.Screen name='dashboard' component={TabNavigator} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
-      <Drawer.Screen name='notifications' component={ReminderScreen} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="notifications-outline" color={color} size={size} />),}}/>
+      {(+role == 1) && 
+        <>
+          <Drawer.Screen name='dashboard' component={TabNavigator} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
+          <Drawer.Screen name='notifications' component={ReminderScreen} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="notifications-outline" color={color} size={size} />),}}/>
+        </>
+      }
+      {(+role == 2) &&
+        <>
+          <Drawer.Screen name='home' component={AdminBottomTabs} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
+          <Drawer.Screen name='message' component={AdminMessage} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="ios-mail-outline" color={color} size={size} />),}}/>
+        </>
+      }
+      {(+role == 3) &&
+        <>
+          <Drawer.Screen name='home' component={DocBottomTabs} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
+          <Drawer.Screen name='message' component={DocMessage} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="ios-mail-outline" color={color} size={size} />),}}/>
+        </>
+      }
     </Drawer.Navigator>
+    :
+    <>
+      <Loading/>
+    </>
+    }
+    </>
   );
 }
 
-function CustomDrawerContent(props){
+function CustomDrawerContent(props, role){
   const dispatch = useDispatch();
   const profilePic = useSelector((state)=> state.UserData.imageProfile); 
   const navigation = useNavigation();

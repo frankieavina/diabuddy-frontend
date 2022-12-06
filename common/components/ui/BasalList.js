@@ -18,7 +18,6 @@ const Item = ({ item, onPress, backgroundColor, textColor, onDelete }) => (
       <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
     </Pressable>
   </View>
-
 );
 
 const BasalList = ({ basalTests, userId }) => {

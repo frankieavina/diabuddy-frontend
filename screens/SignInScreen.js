@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import React, {useState} from 'react';
 import { useDispatch } from 'react-redux';
-
+import { useUserLogInMutation } from '../common/api/userApi';
 import AuthContent from '../common/components/Auth/AuthContent';
 import LoadingOverlay from '../common/components/ui/LoadingOverlay';
 import { userLogIn } from '../app/redux/slices/UserSlice';
@@ -9,8 +9,33 @@ import { userLogIn } from '../app/redux/slices/UserSlice';
 const SignInScreen = () => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
+  ////////////// rtk query ////////////
+  //const [userLogIn , {isLoading: loginRequestSubmitting}] = useUserLogInMutation();
+  ////////////////////////////////////
+
   const dispatch = useDispatch();
 
+  ////////////// rtk query ////////////
+  // const loginHandler = async ({email, password}) => {
+  //   const payload = {
+  //     email,
+  //     password
+  //   };
+
+  //   try{
+  //     if(!loginRequestSubmitting){
+  //       const res = await userLogIn({email, password}).unwrap();
+  //       console.log("RESPONSE:",res)
+  //     }
+  //   } catch (err) {
+  //     Alert.alert(
+  //       'Authentication failed!',
+  //       'Could not log you in. Please check your credentials or try again later!'
+  //     );
+  //   }
+  // }
+  //////////////////////////////////////
+  ////////////////// thunk ///////////////////
   const loginHandler = ({email, password}) => {
     setIsAuthenticating(true);
     try{
@@ -23,6 +48,7 @@ const SignInScreen = () => {
     }
     setIsAuthenticating(false);
   }
+  /////////////////////////////////////
 
   return (
     <>

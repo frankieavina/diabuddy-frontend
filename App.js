@@ -49,6 +49,7 @@ function AuthStack() {
 
 ////////////////// if user logged in ////////////////
 function AuthenticatedStack() {
+
   return (
     <ImageBackground
     source={require('./assets/images/background1.jpg')} 
