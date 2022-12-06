@@ -1,8 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 export const setProfileImage = (pic) => {
   const imageProfile = pic;
@@ -12,8 +8,8 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/' }),
   reducerPath: 'signIn',
   endpoints: (build) => ({
-    // user log in 
-    // builder .query or .mutation 
+ 
+    ////////////////user logging in////////////////////
     userLogIn: build.mutation({
       query: (payload) =>({
         url:`api/auth/signin`,
@@ -28,7 +24,7 @@ export const userApi = createApi({
       transformErrorResponse: (response, meta, arg) => response.success,
     }),
 
-    // user sign up/register
+    ////////////////// user sign up/register ///////////
     userRegister: build.mutation({
       query: ({ email , password, name }) =>({
         url:`api/auth/signin`,

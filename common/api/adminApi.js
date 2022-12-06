@@ -9,15 +9,21 @@ export const adminApi = createApi({
     //////////////////////get all users///////////////////////
     getAllUsers: build.query({
       query: () => `api/users/admin/getAll`,
-      // Pick out data and prevent nested properties in a hook or selector(eg.response.result)
-      transformResponse: (response, meta, arg) => response,
-      // Pick out errors and prevent nested properties in a hook or selector(status/success)
-      transformErrorResponse: (response, meta, arg) => response.success,
+      // // Pick out data and prevent nested properties in a hook or selector(eg.response.result)
+      // transformResponse: (response, meta, arg) => response,
+      // // Pick out errors and prevent nested properties in a hook or selector(status/success)
+      // transformErrorResponse: (response, meta, arg) => response.success,
     }),
 
-    /////////////////////get User info////////////////////////
-    getUser: build.query({
-      query: (userId) => `api/users/admin/get/${userId}`,
+    /////////////////////get User bolus and basal test info////////////////////////
+    getUserBolus: build.query({
+      query: (userId) => `api/users/admin/getBolus/${userId}`,
+      transformResponse: (response, meta, arg) => response,
+    }),
+
+    //need to add user id and date of bolus info
+    getUserBasal: build.query({
+      query: (userId) => `api/users/admin/getBasal/${userId}`,
       transformResponse: (response, meta, arg) => response,
     }),
 
@@ -52,6 +58,4 @@ export const adminApi = createApi({
 })
 
 
-// if using mutation add 'use' and add 'Mutation' at the end
-// if its a query add 'use' and add 'Query' at the end
-export const { useDeleteUserMutation, useUpdateUserMutation, useGetUserQuery, useGetAllUsersQuery } = adminApi; 
+export const { useDeleteUserMutation, useUpdateUserMutation, useGetUserBolusQuery, useGetUserBasalQuery, useGetAllUsersQuery } = adminApi; 

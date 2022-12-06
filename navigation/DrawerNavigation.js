@@ -56,13 +56,13 @@ export default function DrawerNavigator() {
       screenOptions={screenOptionStyle}
       drawerContent={(props) => <CustomDrawerContent role={role} {...props}/>}
     >
-      {(+role == 2) && 
+      {(+role == 1) && 
         <>
           <Drawer.Screen name='dashboard' component={TabNavigator} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
           <Drawer.Screen name='notifications' component={ReminderScreen} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="notifications-outline" color={color} size={size} />),}}/>
         </>
       }
-      {(+role == 1) &&
+      {(+role == 2) &&
         <>
           <Drawer.Screen name='home' component={AdminBottomTabs} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="home-outline" color={color} size={size} />),}}/>
           <Drawer.Screen name='message' component={AdminMessage} options={{ drawerIcon: ({ color, size }) => (<Ionicons name="ios-mail-outline" color={color} size={size} />),}}/>
