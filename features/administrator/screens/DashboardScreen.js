@@ -16,7 +16,7 @@ const DashboardScreen = () => {
   return (
     <View style={{flex:1}}>
       <ImageBackground
-        source={require('../../../assets/images/food.jpg')}
+        source={require('../../../assets/images/pen.jpg')}
         resizeMode="cover"
         style={styles.rootScreen}
         imageStyle={styles.backgroundImage}

@@ -23,8 +23,8 @@ export const adminApi = createApi({
 
     //need to add user id and date of bolus info
     getUserBasal: build.query({
-      query: (userId) => `api/users/admin/getBasal/${userId}`,
-      transformResponse: (response, meta, arg) => response,
+      query: (userId) =>  `api/users/admin/getBasal/${userId}`,
+      transformResponse: (response, meta, arg) => response.result.tests,
     }),
 
     /////////////////////edit User info////////////////////////
