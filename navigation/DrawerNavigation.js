@@ -13,8 +13,8 @@ import { setLogout } from '../app/redux/slices/UserSlice';
 import ReminderScreen from '../screens/ReminderScreen';
 import Loading from '../features/loading/loadingScreen'
 
-import AdminBottomTabs from '../features/administrator/adminTabs';
-import DocBottomTabs from '../features/doctor/docTab';
+import AdminBottomTabs from '../features/administrator/AdminTabs';
+import DocBottomTabs from '../features/doctor/DocTab';
 import AdminMessage from '../features/administrator/screens/MessageScreen';
 import DocMessage from '../features/doctor/screens/MessageScreen';
 
@@ -47,7 +47,6 @@ export default function DrawerNavigator() {
   },[role]);
 
   const userInfo = useSelector((state) => state.UserData.value, shallowEqual);
-  console.log('userInfo:',(+role))
 
   return (
     <>

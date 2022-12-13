@@ -8,7 +8,7 @@ import PatientBolus from './screens/PatientBolus';
 
 const Tab = createBottomTabNavigator();
 
-const docBottomTabs = () => {
+const DocBottomTabs = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Dashboard" component={DashboardScreen} options={{ tabBarIcon: ({color,size}) => (<Ionicons name='home' color={color} size={size}/>) }}/>
@@ -18,4 +18,4 @@ const docBottomTabs = () => {
   )
 }
 
-export default docBottomTabs
+export default DocBottomTabs

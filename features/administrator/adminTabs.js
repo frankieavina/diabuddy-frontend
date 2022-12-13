@@ -8,7 +8,7 @@ import UsersBasal from './screens/UsersBasal';
 
 const Tab = createBottomTabNavigator();
 
-const adminBottomTabs = () => {
+const AdminBottomTabs = () => {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Edit Users" component={DashboardScreen} options={{ tabBarIcon: ({color,size}) => (<Ionicons name='cog' color={color} size={size}/>) }}/>
@@ -18,4 +18,4 @@ const adminBottomTabs = () => {
   )
 }
 
-export default adminBottomTabs
+export default AdminBottomTabs
