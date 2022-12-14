@@ -25,7 +25,7 @@ const BasalList = ({user}) => {
           <>
             {data.map((data) =>
                 <View style={styles.list}>
-                    <Text style={{padding: 10}}>
+                    <Text style={{paddingRight: 10, paddingTop: 10}}>
                         {moment(data.time).format('YYYY-MM-DD HH:mm:ss')}
                     </Text>
                     <Chip status="primary" title={data.numberOfTest} titleStyle={{fontSize: 15}} buttonStyle={{backgroundColor: Colors.primary700, marginTop:5, padding: 0}} />
@@ -41,23 +41,10 @@ const BasalList = ({user}) => {
 export default BasalList
 
 const styles = StyleSheet.create({
-    item: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 12,
-        width: '75%',
-        marginVertical: 8,
-        marginHorizontal: 16,
-        borderRadius: 4,
-        elevation: 2,
-        shadowColor: 'black',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.35,
-        shadowRadius: 4,
-    },
     list:{
         flexDirection: 'row',
         justifyContent: 'space-around',
-        margin: 10
+        marginBottom: 10,
+        marginTop: 10
     },
 })
