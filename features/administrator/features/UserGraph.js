@@ -4,13 +4,30 @@ import { Grid, LineChart, XAxis, YAxis, AreaChart } from 'react-native-svg-chart
 import * as shape from 'd3-shape'
 import { Button } from '@rneui/themed';
 import { Colors } from '../../../utils/constants/colors';
+import { useGetUserGlucoseDataQuery } from '../../../common/api/nightScoutApi';
+import moment from 'moment';
 
-const UserGraph = ({onPress}) => {
+const UserGraph = ({onPress, date, user}) => {
+
+    const { item , id} = user;
+    
+    let formattedDate = moment(date).add(1, 'days');
+    
+    // console.log('Date:',moment(date).format("YYYY-MM-DD"));
+    // console.log('Date2:',moment(date2).format("YYYY-MM-DD"));
+
+    const {bData, isLoading} = useGetUserGlucoseDataQuery({
+        date1: moment(formattedDate).format("YYYY-MM-DD"),
+        date2: moment(formattedDate).add(1, 'days').format('YYYY-MM-DD')
+    });
+
+    console.log("Bdata:",bData)
+
     const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
 
     const axesSvg = { fontSize: 10, fill: 'grey' };
-    const verticalContentInset = { top: 10, bottom: 10 }
-    const xAxisHeight = 30
+    const verticalContentInset = { top: 10, bottom: 10 };
+    const xAxisHeight = 30;
 
   return (
     <View style={styles.charContainer}>
@@ -27,7 +44,7 @@ const UserGraph = ({onPress}) => {
                     data={data}
                     contentInset={{ verticalContentInset }}
                     curve={shape.curveNatural}
-                    svg={{ fill: 'rgba(134, 65, 244, 0.8)' }}
+                    svg={{ fill: Colors.icon500}}
                 >
                 <Grid />
                 </AreaChart>

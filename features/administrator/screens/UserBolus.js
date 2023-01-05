@@ -14,15 +14,13 @@ const UserBolus = () => {
   const { data, isLoading} = useGetAllUsersQuery();
   const [user, setUser] = useState('');
   const [date, setDate] = useState('');
-  const [showList, setShowList] = useState(true); //change to false
+  const [showList, setShowList] = useState(false); //change to false
 
   const onSubmit = () =>{
     let dateValid = moment(date,'YYYY-MM-DD', true).isValid();
     
     if(dateValid){
       setShowList(!showList);
-      //moment().add(1, 'days').calendar();    add a day to it
-      console.log('Date:',moment(date).format("YYYY-MM-DD"));
     }
     else{
       Alert.alert('Invalid input', 'Please check the date input format. Should be YYYY-MM-DD.');
@@ -91,9 +89,9 @@ const UserBolus = () => {
       { showList &&
         <View>
           <Text style={styles.infoText}> 
-            Showing glucose graph info for {user}
+            Showing glucose graph info for {user.item}
           </Text>
-          <UserGraph onPress={onSubmit}/> 
+          <UserGraph user={user} date={date} onPress={onSubmit}/> 
         </View>
        
       }
