@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, {useState} from 'react'
+import { Card, Input } from "@rneui/themed";
 import { Colors } from '../../../utils/constants/colors';
 import SelectBox from 'react-native-multi-selectbox';
 import {useGetAllUsersQuery} from '../../../common/api/adminApi';
@@ -38,20 +39,25 @@ const UsersBasal = () => {
         ) : (
           <>
             <View style={styles.pickerContainer}>
-              <SelectBox
-                label="Select single"
-                options={data.result.map(({ name, id }) => {
-                  return {item:name,id:+id};
-                })}
-                value={user}
-                onChange={onChange()}
-                hideInputFilter={false}
-                arrowIconColor={Colors.primary500}
-                width={'75%'}
-              />
-              <Button buttonStyle={{backgroundColor:Colors.primary500, width:'50%', marginBottom: 20, marginTop: 20}} onPress={onSubmit}>
+
+              <Card style={styles.formContent}>
+                <SelectBox
+                  label="Select single"
+                  options={data.result.map(({ name, id }) => {
+                    return {item:name,id:+id};
+                  })}
+                  value={user}
+                  onChange={onChange()}
+                  hideInputFilter={false}
+                  arrowIconColor={Colors.primary500}
+                  width={'100%'}
+                />              
+              </Card>
+
+              <Button buttonStyle={{backgroundColor:Colors.primary500, width:'50%', margin:20}} onPress={onSubmit}>
                 View
               </Button> 
+
               {showList && 
                 <BasalList user={user}/>
               }
@@ -68,6 +74,17 @@ const UsersBasal = () => {
 export default UsersBasal
 
 const styles = StyleSheet.create({
+  formContent:{
+    padding: 16,
+    color: Colors.primary500,
+    borderRadius: 4,
+    elevation: 2,
+    shadowColor: 'black',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.35,
+    shadowRadius: 4,
+    marginBottom: 20
+  },
   rootScreen:{
     flex:1
   },
@@ -91,7 +108,6 @@ const styles = StyleSheet.create({
   pickerContainer:{
     margin: 20,
     marginTop: 40,
-    marginLeft: 40,
     marginBottom: 40,
     flexDirection: 'column'
   },
