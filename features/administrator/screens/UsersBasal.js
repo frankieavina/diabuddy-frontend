@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React, {useState} from 'react'
-import { Card, Input } from "@rneui/themed";
+import { Card } from "@rneui/themed";
 import { Colors } from '../../../utils/constants/colors';
 import SelectBox from 'react-native-multi-selectbox';
-import {useGetAllUsersQuery} from '../../../common/api/adminApi';
 import { Button } from '@rneui/themed';
+
 import BasalList from './BasalList';
+
+import {useGetAllUsersQuery} from '../../../common/api/adminApi';
+
 
 const UsersBasal = () => {
   const { data, isLoading} = useGetAllUsersQuery();
@@ -31,7 +34,7 @@ const UsersBasal = () => {
       <View>
         <Text style={styles.titleText}>Basal Test User History</Text>
         <Text style={styles.infoText}> 
-          Please select specific user to view user's data
+          Please select specific user to view data
         </Text>
       </View>
       { (isLoading) ? (

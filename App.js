@@ -50,6 +50,17 @@ function AuthStack() {
 ////////////////// if user logged in ////////////////
 function AuthenticatedStack() {
 
+  useEffect(() => {
+
+    async function fetchUserRole(){
+      const userRole = await AsyncStorage.getItem('role');
+      if(userRole){
+        console.log("ROLE:",userRole)
+      }
+    }
+    fetchUserRole();
+  },[]);
+
   return (
     <ImageBackground
     source={require('./assets/images/background1.jpg')} 
@@ -61,7 +72,6 @@ function AuthenticatedStack() {
       screenOptions={{
         headerStyle: { backgroundColor: Colors.primary500 },
         headerTintColor: 'white',
-        // contentStyle: { backgroundColor: Colors.primary700 },
       }}
     >
       <Stack.Screen name='LandingPage' component={DrawerNavigator} 
@@ -83,6 +93,7 @@ function AuthenticatedStack() {
 function Navigation() {
   const isAuthenticated = useSelector((state) => state.UserData.loggedIn);
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     async function fetchUserExist(){

@@ -2,12 +2,13 @@ import { StyleSheet, Text, View, ImageBackground, Alert } from 'react-native'
 import React, { useState } from 'react';
 import { Colors } from '../../../utils/constants/colors';
 import SelectBox from 'react-native-multi-selectbox';
-import {useGetAllUsersQuery} from '../../../common/api/adminApi';
 import { Ionicons } from '@expo/vector-icons';
 import { Card, Input } from "@rneui/themed";
 import { Button } from '@rneui/themed';
 import UserGraph from '../features/UserGraph'
 import moment from 'moment';
+
+import {useGetAllUsersQuery} from '../../../common/api/adminApi';
 
 
 const UserBolus = () => {
@@ -46,7 +47,7 @@ const UserBolus = () => {
       { (!isLoading && !showList) && (
           <>
             <Text style={styles.infoText}> 
-              Please select specific user and date to view user's data
+              Please select specific user and date to view data
             </Text>
             <View style={styles.pickerContainer}>
 

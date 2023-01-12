@@ -4,59 +4,42 @@ import { Colors } from '../../../utils/constants/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { Chip } from "@rneui/themed";
 
-const UsersList = ({data}) => {
+import Messaging from "./Messaging";
+
+const PatientList = ({data, onMessage}) => {
     const [selectedId, setSelectedId] = useState(null);
     const [roleName, setRoleName] = useState('');
 
     useEffect(()=>{
         const role = () =>{
-           if(data.roleId == 1){setRoleName('User')}
+           if(data.roleId == 1){setRoleName('Patient')}
            if(data.roleId == 2){setRoleName('Admin')}
            if(data.roleId == 3){setRoleName('Doctor')}
         }
         role(); 
     },[])
-    
+
     const backgroundColor = data.id === selectedId ? Colors.icon800 : 'white';
     const textColor = data.id === selectedId ? Colors.icon500 : Colors.icon500;
 
-    const onDelete = () =>{
-        // rtq to delete user 
-    };
-
     const onPress = () =>{
-        setSelectedId(data.id);
+      setSelectedId(data.id);
     }
 
-    const onEdit = () =>{
-
-    }
-
-    const onMessage = () =>{
-        
-    }
-
-    return (
-        <View style={styles.list}>
-            <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-                <Chip status="primary" title={data.name} titleStyle={{fontSize: 20}} buttonStyle={{backgroundColor: Colors.primary700, marginTop:5, padding: 0}}/>
-                <Text style={[styles.title, textColor]}>{roleName}</Text>
-            </TouchableOpacity>
-            <Pressable style={styles.trash} onPress={onMessage()}>
-                <Ionicons name="chatbox-outline" size={30} color={Colors.primary700} />
-            </Pressable>
-            <Pressable style={styles.trash} onPress={onEdit()}>
-                <Ionicons name="create-outline" size={30} color={Colors.primary700} />
-            </Pressable>
-            <Pressable style={styles.trash} onPress={onDelete()}>
-                <Ionicons name="trash-outline" size={30} color={Colors.primary700} />
-            </Pressable>
-        </View>
-    )
+  return (
+    <View style={styles.list}>
+      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+          <Chip status="primary" title={data.name} titleStyle={{fontSize: 20}} buttonStyle={{backgroundColor: Colors.primary700, marginTop:5, padding: 0}}/>
+          <Text style={[styles.title, textColor]}>{roleName}</Text>
+      </TouchableOpacity>
+      <Pressable style={styles.trash} onPress={onMessage}>
+          <Ionicons name="chatbox-outline" size={30} color={Colors.primary700} />
+      </Pressable>
+    </View>
+  )
 }
 
-export default UsersList
-
+export default PatientList
 
 const styles = StyleSheet.create({
     container: {

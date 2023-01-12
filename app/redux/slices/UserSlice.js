@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+//'https://localhost:3000/api/auth/signin'
+
 export const userLogIn = createAsyncThunk(
   'signIn',
   async ({ email, password }) => {
@@ -25,7 +28,7 @@ export const userRegister = createAsyncThunk(
   async ({ email, password, name }) => {
     try {
       const backendRes = await axios.post(
-        'https://diabuddy-mysql-backend-production.up.railway.app/api/auth/signup',
+        'http://localhost:3000/api/auth/signup',
         {
           name: name,
           email: email,
@@ -99,6 +102,8 @@ export const userSlice = createSlice({
           if (payload.token) {
             AsyncStorage.setItem('token', JSON.stringify(payload.token));
             AsyncStorage.setItem('user', payload.result.name);
+            AsyncStorage.setItem('id', JSON.stringify(payload.result.id));
+            AsyncStorage.setItem('role', JSON.stringify(payload.result.roleId));
           }
         } else {
           Alert.alert(
