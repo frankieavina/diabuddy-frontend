@@ -45,8 +45,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A diabetes management app engineered to facilitate monitoring for patients and doctors, seamlessly integrating with the Nightspot Web Monitor to provide real-time glucose readings 
-for enhanced care. 
+A diabetes management app engineered to facilitate monitoring for patients and doctors, seamlessly integrating with the Nightscout Web Monitor to provide real-time glucose readings for enhanced care. 
+
+Nightscout (also known as CGM in the Cloud) is an open-source cloud application used by people with diabetes and parents of kids with diabetes to visualize, store and share the data from their Continuous Glucose Monitoring sensors in real-time. Once setup, Nightscout acts as a central repository of blood glucose and insulin dosing/treatment data for a single person, allowing you to view the CGM graph and treatment data anywhere using just a web browser connected to the internet.
+![Screenshot 2024-08-16 at 3 49 15 PM](https://github.com/user-attachments/assets/661689c3-bbc7-47d5-8b17-4a7ea5084c4b)
+
 
 
 ### Built With
@@ -58,6 +61,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * Express
 * Node.js
 * Expo
+* MongoDB Atlas
+* Redux
+* MySQL Workbench
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -107,6 +113,16 @@ _Below is an example of how you can instruct your audience on installing and set
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+8. To set up nightscout and have live data do the following:
+   a.There are several parts to this system. You need somewhere online to store, process and visualize this data (a Nightscout Site), something to upload CGM data to your             Nightscout (an Uploader), and then optionally you can use other devices to access or view this data (one - or more - Follower).
+   ![Screenshot 2024-08-16 at 3 49 31 PM](https://github.com/user-attachments/assets/de3ce4c9-649f-4ad9-9001-9db6e7292c52)
+
+   b.We got to Set Up DB using MongoDB Atlas: [https://nightscout.github.io/vendors/mongodb/atlas/]
+   c.Set Up/Create own Nightscout Web App: [https://nightscout.github.io/vendors/railway/new_user/]
+   d.Set up your uploader ( in this case I have a Medtronic pump so I will use Medtronic Carelink with xDrip+ app on an Andriod device) Nightscout: [https://nightscout.github.io/uploader/xdripcarelink/]  [https://nightscout.github.io/uploader/setup/]
+
+
+Note: There are many ways both free and paid services each with pros and cons that you can go about setting up Nightscout. It just depends on your needs, hardware, and other variables. For more info here is a link: [https://nightscout.github.io/]
 
 
 <!-- USAGE EXAMPLES -->
