@@ -129,13 +129,16 @@ Note: There are many ways both free and paid services each with pros and cons th
 ## Usage
 
 Patient Dashboard:
-![Simulator Screenshot - old iOS iPhone 14 Pro - 2024-08-16 at 14 19 33](https://github.com/user-attachments/assets/eb916fb2-0840-485b-8639-d97488448362)
+<br>
+<img src="https://github.com/user-attachments/assets/eb916fb2-0840-485b-8639-d97488448362" width="350" />
 
 Doctor Dashboard:
-![Simulator Screenshot - old iOS iPhone 14 Pro - 2024-08-16 at 14 22 10](https://github.com/user-attachments/assets/0f7e2965-244f-4040-80fa-174aa3893c1e)
+<br>
+<img src="https://github.com/user-attachments/assets/0f7e2965-244f-4040-80fa-174aa3893c1e" width="350" />
 
 Admin Dashboard:
-![Simulator Screenshot - old iOS iPhone 14 Pro - 2024-08-16 at 14 20 17](https://github.com/user-attachments/assets/317accb0-b57c-4c92-af45-22d94d6e7115)
+<br>
+<img src="https://github.com/user-attachments/assets/317accb0-b57c-4c92-af45-22d94d6e7115" width="350" />
 
 <!-- CONTACT -->
 ## Contact
